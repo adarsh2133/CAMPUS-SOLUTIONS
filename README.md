@@ -1,5 +1,6 @@
 # CAMPUS-SOLUTIONS
 BUILDING EFFICIENT CAMPUS SOLUTIONS!!
+
 **🎓 STUNET**
 
 STUNET is a student-centric side project built to help students connect, collaborate, and compete together. The platform enables students to find teammates for competitions, hackathons, and collaborative projects while fostering a strong and supportive student community.
@@ -33,18 +34,17 @@ _**TEAM**_
 
 **TEAM LEAD**
 
-AK Sharma
+_ADARSH KUMAR SHARMA_
 
 **Contributors**
 
-Lavnaya Saini
+_LAVANYA SAINI_
 
-Atul Kaushik
+_ATUL KAUSHIK_
 
-Ishant Chaudhary
+_ISHANT CHAUDHARY_
 
-Sayan Yadav
-
+_SAYAN YADAV_
 
  _**VISION**_
 
@@ -59,3 +59,5 @@ This is an evolving side project, and new features will be rolled out gradually.
 **📄 License**
 
 MIT License
+
+**हर हर महादेव🕉️🔱 !!**
