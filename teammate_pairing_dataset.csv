@@ -1,0 +1,76 @@
+TeamMember_ID,Name,Skills_with_Proficiency,Primary_Skill,Preferred_Competition_Types,Competitions_Participated,Competitions_Won,Average_Ranking,Availability_Hours_Per_Week,Timezone,Previous_Teams,Team_Compatibility_Score,Communication_Rating,Leadership_Experience,Certifications,Overall_Capability_Score
+TM0001,Developer_1,Docker(4); DevOps(2); Python(5); Cloud Architecture(4); GCP(1),Docker,"Mobile App, Cybersecurity",6,4,45.6,22,PST,8,4.9,4.43,Yes,4,6.35
+TM0002,Developer_2,Python(4); MongoDB(4); Full Stack(1); Docker(5),Python,"IoT, AI/ML, Cybersecurity",12,12,8.38,11,JST,7,3.18,2.88,Yes,2,5.82
+TM0003,Developer_3,Machine Learning(5); Node.js(3); Data Analysis(1),Machine Learning,"Cloud Computing, Mobile App",9,2,4.11,43,EST,3,3.69,4.09,Yes,4,4.76
+TM0004,Developer_4,GraphQL(1); Java(4); Flask(5); React(1); Docker(3),GraphQL,"Data Science, Mobile App",11,7,94.35,58,SGT,8,3.21,2.19,Yes,3,4.55
+TM0005,Developer_5,Kubernetes(4); Docker(3); Flask(3); Machine Learning(1),Kubernetes,"Hardware Hackathon, IoT",11,10,19.47,33,MST,3,2.98,2.66,No,2,5.17
+TM0006,Developer_6,DevOps(1); Data Analysis(4); Node.js(5); React(5); MongoDB(3),DevOps,"Web Development, Cybersecurity",0,0,,28,PST,10,4.81,4.36,No,2,6.11
+TM0007,Developer_7,GraphQL(5); GCP(3); DevOps(3); AWS(3),GraphQL,"AI/ML, Mobile App, Cybersecurity",2,2,77.09,21,GMT,5,3.11,2.05,No,0,5.46
+TM0008,Developer_8,Docker(1); Backend(1); C++(3); React(5),Docker,"Cybersecurity, Hardware Hackathon, Game Development",3,0,20.23,12,MST,6,2.08,3.74,No,2,3.33
+TM0009,Developer_9,MongoDB(4); JavaScript(2); Product Management(3),MongoDB,"Game Development, Hardware Hackathon",6,6,69.9,57,EST,9,4.75,3.33,Yes,0,6.43
+TM0010,Developer_10,Flask(5); SQL(2); AWS(2),Flask,"Web Development, IoT, Hardware Hackathon",0,0,,9,PST,7,4.83,4.83,No,2,6.06
+TM0011,Developer_11,UI/UX Design(2); GraphQL(2); Node.js(2); C++(3),UI/UX Design,"Game Development, Cybersecurity",3,0,80.54,40,AEST,4,4.25,4.42,No,3,4.37
+TM0012,Developer_12,JavaScript(4); Mobile Development(4); AWS(3); Kubernetes(2),JavaScript,"Game Development, Mobile App",4,0,12.23,57,AEST,9,2.17,3.65,No,4,3.63
+TM0013,Developer_13,Cloud Architecture(4); Mobile Development(1); Python(1); C++(5); Java(4),Cloud Architecture,"Blockchain, Web Development, IoT",6,5,49.77,17,CST,11,3.71,4.22,No,0,6.04
+TM0014,Developer_14,SQL(1); Kubernetes(1); Django(5); JavaScript(3); Frontend(1),SQL,"Web Development, AI/ML",3,1,39.44,54,GMT,8,2.78,3.36,Yes,0,4.0
+TM0015,Developer_15,C++(3); Cloud Architecture(5); MongoDB(2),C++,"IoT, Data Science",2,2,28.07,52,IST,5,4.08,3.6,No,2,6.41
+TM0016,Developer_16,GraphQL(3); Machine Learning(3); Node.js(2),GraphQL,"IoT, Mobile App, Blockchain",14,14,42.63,41,GMT,1,4.42,4.71,No,1,6.72
+TM0017,Developer_17,Product Management(5); Frontend(2); Machine Learning(5); Docker(3),Product Management,"Mobile App, Cybersecurity",2,2,67.09,54,AEST,2,2.12,2.51,Yes,4,5.35
+TM0018,Developer_18,SQL(2); C++(4); Full Stack(1); Backend(1),SQL,"Web Development, Cloud Computing",1,0,7.17,55,IST,2,4.69,3.54,No,4,4.09
+TM0019,Developer_19,Product Management(4); Flask(2); SQL(1); Frontend(4),Product Management,"AI/ML, Web Development",7,2,98.67,41,JST,0,2.02,2.68,Yes,3,3.55
+TM0020,Developer_20,SQL(3); Kubernetes(2); Django(3); Machine Learning(5),SQL,"Hardware Hackathon, Blockchain, Web Development",0,0,,16,EST,9,4.3,2.26,No,3,4.92
+TM0021,Developer_21,DevOps(5); Django(4); Frontend(4),DevOps,"Cybersecurity, IoT, Hardware Hackathon",7,7,57.87,33,SGT,10,4.39,2.6,Yes,4,6.53
+TM0022,Developer_22,Frontend(3); Backend(3); GCP(3),Frontend,"Hardware Hackathon, Cybersecurity",10,3,99.77,37,GMT,10,4.23,2.1,No,1,4.33
+TM0023,Developer_23,Django(3); Full Stack(2); Mobile Development(2),Django,"Cloud Computing, IoT, Data Science",11,3,91.96,9,SGT,4,4.12,2.46,No,1,4.11
+TM0024,Developer_24,JavaScript(1); Machine Learning(2); UI/UX Design(4),JavaScript,"Hardware Hackathon, Cybersecurity",1,0,35.35,38,EST,10,2.1,4.74,Yes,0,3.67
+TM0025,Developer_25,GCP(3); Kubernetes(3); Java(5); JavaScript(1); React(5),GCP,"IoT, Data Science",5,3,48.63,34,CET,2,2.47,2.55,No,2,4.57
+TM0026,Developer_26,C++(2); Backend(3); Cloud Architecture(3); Product Management(4),C++,"Blockchain, Data Science, Web Development",4,2,13.15,23,PST,11,4.11,4.73,No,2,5.74
+TM0027,Developer_27,DevOps(1); Data Analysis(2); UI/UX Design(3); Django(1),DevOps,"AI/ML, IoT, Data Science",13,3,14.1,33,CST,6,4.05,4.47,No,1,4.57
+TM0028,Developer_28,Data Analysis(3); Java(1); SQL(3),Data Analysis,"Web Development, Blockchain",3,0,72.43,44,MST,5,3.43,3.99,No,4,3.9
+TM0029,Developer_29,Cloud Architecture(2); GCP(1); Frontend(3),Cloud Architecture,"Game Development, Web Development",11,10,91.81,21,AEST,8,3.34,2.56,No,2,4.98
+TM0030,Developer_30,C++(5); Machine Learning(1); GraphQL(3); Java(2); MongoDB(3),C++,"Game Development, Web Development",13,7,23.77,49,CST,2,4.09,3.02,No,3,5.04
+TM0031,Developer_31,Backend(4); MongoDB(5); Cloud Architecture(1); Docker(5); Flask(5),Backend,"Hardware Hackathon, AI/ML, Cybersecurity",6,3,74.02,34,EST,2,3.4,2.89,No,1,5.12
+TM0032,Developer_32,Mobile Development(1); Django(4); Full Stack(4); JavaScript(3),Mobile Development,"Hardware Hackathon, Web Development, Game Development",9,8,19.46,7,SGT,5,4.4,3.89,Yes,0,6.29
+TM0033,Developer_33,Data Analysis(3); Full Stack(1); Product Management(2); AWS(4); Django(2),Data Analysis,"Web Development, Hardware Hackathon",7,2,72.62,30,CST,5,4.89,2.33,No,4,4.42
+TM0034,Developer_34,C++(3); Django(4); Backend(5),C++,"Cloud Computing, Web Development",13,6,16.92,40,CST,11,2.02,2.86,No,0,4.48
+TM0035,Developer_35,Backend(1); AWS(2); Python(1),Backend,"Cybersecurity, Web Development, Game Development",3,0,38.98,33,EST,5,3.12,4.46,Yes,1,3.57
+TM0036,Developer_36,Kubernetes(5); MongoDB(3); React(4); Cloud Architecture(3),Kubernetes,"IoT, Hardware Hackathon",12,2,4.08,29,SGT,11,3.69,3.41,No,3,4.67
+TM0037,Developer_37,AWS(1); Docker(4); GraphQL(5); JavaScript(5),AWS,"Cybersecurity, Game Development, Data Science",1,1,97.5,42,JST,0,4.86,4.72,No,2,7.33
+TM0038,Developer_38,Django(2); Java(2); Full Stack(2),Django,"Game Development, Hardware Hackathon, Blockchain",8,5,62.04,35,JST,1,4.81,4.84,No,3,5.91
+TM0039,Developer_39,Python(5); Backend(5); Machine Learning(5); Flask(3),Python,"Blockchain, IoT, Web Development",2,1,40.92,33,CET,0,4.52,2.52,No,1,5.62
+TM0040,Developer_40,Python(5); MongoDB(4); Flask(3),Python,"Game Development, Cybersecurity",9,1,18.92,9,CET,8,2.74,4.61,No,0,4.76
+TM0041,Developer_41,Docker(1); SQL(5); Data Analysis(4); Product Management(3),Docker,"Mobile App, Cloud Computing, AI/ML",14,4,53.82,53,EST,7,4.42,3.76,No,3,5.14
+TM0042,Developer_42,Flask(2); Full Stack(5); Frontend(1); Django(3); DevOps(2),Flask,"Web Development, AI/ML",11,6,17.08,25,EST,6,4.02,3.33,No,1,5.07
+TM0043,Developer_43,JavaScript(2); Django(4); Data Analysis(2),JavaScript,"Mobile App, AI/ML, Data Science",14,8,11.8,38,CET,3,4.0,4.42,No,0,5.58
+TM0044,Developer_44,Mobile Development(2); Product Management(2); DevOps(1); Flask(3); JavaScript(5),Mobile Development,"AI/ML, IoT, Web Development",4,1,53.14,19,PST,10,4.29,4.44,No,2,5.03
+TM0045,Developer_45,GCP(3); Kubernetes(2); Django(4); Python(2); DevOps(2),GCP,"Cloud Computing, Blockchain",6,6,11.58,46,AEST,7,4.89,3.45,No,0,6.38
+TM0046,Developer_46,Data Analysis(4); Node.js(2); Django(1),Data Analysis,"Cybersecurity, Game Development, IoT",11,1,47.82,25,EST,5,2.07,3.93,No,2,3.52
+TM0047,Developer_47,GCP(5); DevOps(4); React(5); Backend(1),GCP,"Mobile App, Data Science, Cloud Computing",11,1,67.29,48,GMT,7,4.64,3.95,No,4,5.12
+TM0048,Developer_48,AWS(1); Docker(4); Product Management(1); SQL(4),AWS,"IoT, Web Development, Mobile App",3,3,77.09,5,JST,4,2.28,2.77,No,0,5.02
+TM0049,Developer_49,Django(3); Kubernetes(3); Backend(4),Django,"Game Development, Hardware Hackathon",9,5,14.99,11,PST,8,2.97,2.07,Yes,2,4.46
+TM0050,Developer_50,Backend(4); GCP(1); Django(4); Frontend(5),Backend,"Web Development, IoT, Game Development",11,6,16.05,55,GMT,2,2.58,2.64,No,1,4.58
+TM0051,Developer_51,GraphQL(2); Kubernetes(5); JavaScript(4),GraphQL,"Blockchain, Game Development",13,6,42.2,31,GMT,5,4.37,3.75,No,4,5.64
+TM0052,Developer_52,Data Analysis(3); UI/UX Design(1); Flask(5),Data Analysis,"AI/ML, Blockchain, IoT",8,8,69.13,52,EST,9,4.79,2.76,No,3,6.22
+TM0053,Developer_53,C++(3); Mobile Development(1); Node.js(5); AWS(4); Docker(5),C++,"Mobile App, Web Development, Cloud Computing",9,4,55.41,58,SGT,9,2.06,2.25,No,0,4.05
+TM0054,Developer_54,Flask(4); Node.js(2); Machine Learning(3),Flask,"Cloud Computing, Game Development, AI/ML",11,9,61.68,26,PST,3,2.36,2.59,No,4,4.82
+TM0055,Developer_55,GraphQL(2); JavaScript(5); React(5); Backend(4); C++(3),GraphQL,"Mobile App, Cybersecurity, Game Development",7,2,30.46,23,IST,6,3.73,4.63,No,1,5.44
+TM0056,Developer_56,Node.js(4); Backend(4); Machine Learning(2); SQL(2),Node.js,"AI/ML, Cloud Computing, Data Science",10,2,84.36,10,SGT,2,4.99,3.1,No,3,4.84
+TM0057,Developer_57,Machine Learning(2); JavaScript(4); AWS(4); GraphQL(2),Machine Learning,"Cybersecurity, Hardware Hackathon, Cloud Computing",2,1,69.85,16,AEST,5,2.63,4.48,No,4,5.04
+TM0058,Developer_58,JavaScript(2); MongoDB(5); React(1); Kubernetes(4),JavaScript,"IoT, Cybersecurity",12,5,52.29,49,MST,4,2.17,4.56,Yes,4,4.73
+TM0059,Developer_59,Machine Learning(4); GCP(1); Product Management(4),Machine Learning,"Web Development, Game Development",5,1,84.63,10,JST,3,2.1,2.19,No,0,3.32
+TM0060,Developer_60,Full Stack(5); Frontend(1); Cloud Architecture(3),Full Stack,"AI/ML, Mobile App",4,3,42.38,11,CET,6,3.64,4.94,Yes,3,6.13
+TM0061,Developer_61,C++(4); Full Stack(4); Java(3); Cloud Architecture(2),C++,"Game Development, Cybersecurity",13,3,52.42,44,GMT,5,2.48,2.77,No,1,3.86
+TM0062,Developer_62,Data Analysis(5); Machine Learning(5); GraphQL(1); Cloud Architecture(2),Data Analysis,"Web Development, IoT, Blockchain",10,7,51.2,32,EST,6,2.55,4.68,No,2,5.59
+TM0063,Developer_63,DevOps(1); UI/UX Design(3); Flask(1),DevOps,"Hardware Hackathon, IoT, Web Development",12,8,82.09,54,CET,2,4.28,4.96,No,3,5.7
+TM0064,Developer_64,AWS(3); GraphQL(3); Machine Learning(1),AWS,"Blockchain, Game Development, Cloud Computing",6,6,8.63,7,PST,9,3.54,2.92,Yes,2,5.52
+TM0065,Developer_65,Kubernetes(4); React(5); Backend(3),Kubernetes,"Hardware Hackathon, Cloud Computing",2,1,70.23,32,PST,6,3.86,3.68,No,0,5.62
+TM0066,Developer_66,Kubernetes(4); JavaScript(2); Django(1); Machine Learning(5); Full Stack(1),Kubernetes,"Game Development, Hardware Hackathon, Mobile App",4,4,7.3,24,GMT,2,3.47,4.21,No,0,6.11
+TM0067,Developer_67,Mobile Development(4); Django(4); Product Management(4); Full Stack(4); AWS(4),Mobile Development,"Game Development, Blockchain",7,6,41.29,26,JST,1,3.09,3.42,Yes,2,5.92
+TM0068,Developer_68,GCP(5); React(1); Docker(2); JavaScript(3),GCP,"Mobile App, AI/ML, Data Science",10,6,57.9,43,MST,10,2.39,2.82,Yes,3,4.38
+TM0069,Developer_69,AWS(4); Java(1); DevOps(4); JavaScript(2); C++(5),AWS,"Cloud Computing, IoT",6,1,67.19,45,AEST,1,4.66,3.8,No,2,5.0
+TM0070,Developer_70,AWS(1); C++(1); MongoDB(4); Kubernetes(5),AWS,"Cybersecurity, Blockchain, Game Development",11,11,80.04,7,MST,11,3.74,4.28,Yes,2,6.31
+TM0071,Developer_71,UI/UX Design(1); Machine Learning(5); Product Management(2); Docker(4),UI/UX Design,"AI/ML, Blockchain, Hardware Hackathon",7,7,51.04,15,PST,9,2.12,2.09,Yes,1,4.88
+TM0072,Developer_72,GCP(1); Product Management(5); Full Stack(2); Flask(5); AWS(5),GCP,"Data Science, Web Development",4,3,24.27,15,IST,3,3.04,3.74,Yes,2,5.65
+TM0073,Developer_73,GCP(3); Machine Learning(5); Mobile Development(2),GCP,"IoT, Mobile App",3,0,87.83,16,CET,0,4.85,3.54,Yes,3,4.69
+TM0074,Developer_74,GCP(1); Docker(1); Flask(3); Cloud Architecture(3),GCP,"Data Science, Web Development",5,1,14.31,25,CST,8,2.84,2.63,No,2,3.39
+TM0075,Developer_75,AWS(1); Node.js(2); Kubernetes(4); JavaScript(3); MongoDB(3),AWS,"Web Development, IoT, Data Science",0,0,,59,CST,9,2.73,3.43,Yes,1,4.5
