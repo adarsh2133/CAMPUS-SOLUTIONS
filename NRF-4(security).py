@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, Response, jsonify, session
+from flask import Flask, request, redirect, Response, jsonify
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
@@ -7,15 +7,11 @@ import os
 import re
 
 app = Flask(__name__)
-CORS(app, 
-     origins=["http://127.0.0.1:5500", "http://localhost:5500"], 
-     supports_credentials=True)
+CORS(app, origins=["http://127.0.0.1:5500", "http://localhost:5500"])
 load_dotenv(".env")
 mongo_uri = str(os.getenv("mongo_uri"))
-secret_key_ = str(os.getenv("secret_key"))
 app.config["MONGO_URI"] = mongo_uri
 db = PyMongo(app).db
-app.secret_key = secret_key_
 
 # Whitelisted domains
 ALLOWED_DOMAINS = {
@@ -115,19 +111,39 @@ def login():
     data = request.get_json()
     username = data.get("username","")
     password = data.get("password","")
-    currentUser = db.user_data.find_one({"_id":username})
+    
     if username == "" or password == "":
         return jsonify({"status":"please fill all the fields"}),400
-    elif currentUser and check_password_hash(currentUser.get("password"),password) :
-        session["username"] = currentUser.get("_id")
-        session["name"] = currentUser.get("name")
-        session["login"] = True
+    
+    currentUser = db.user_data.find_one({"_id":username})
+
+    if currentUser and check_password_hash(currentUser.get("password"),password) :
         return jsonify({"status": "login successfully",
                          "login":True ,
-                          "username":session["username"],
-                           "name":session["name"] }),200
+                          "username":currentUser.get("_id"),
+                           "name":currentUser.get("name")}),200
     else:
         return jsonify({"status":"username or password is incorrect","login":False}),401
+    
+@app.route("/api/user/<username>", methods=["GET"])
+def get_user(username):
+    # Express sends username from ITS session
+    # CORS ensures ONLY Express can call this
+    user = db.user_data.find_one({"_id": username})
+    if user:
+        return jsonify({
+            "status": "found",
+            "user": {
+                "username": user.get("_id"),
+                "name": user.get("name"),
+                "email": user.get("email"),
+                "phoneNumber": user.get("phoneNumber"),
+                "college": user.get("college"),
+                "year": user.get("year"),
+                "major": user.get("major")
+            }
+        }), 200
+    return jsonify({"status": "not found"}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
