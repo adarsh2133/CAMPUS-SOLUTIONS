@@ -13,6 +13,10 @@ from datetime import datetime, timedelta, UTC
 from bson import ObjectId
 
 pending_users = {}  # {username: {user_data, otp_token}}
+
+# ========== FORGOT PASSWORD STORAGE ==========
+forgot_password_requests = {}  # {email: {username, otp_token, created}}
+
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY') or secrets.token_urlsafe(32)
 
@@ -25,7 +29,6 @@ if not mongo_uri:
 app.config["MONGO_URI"] = mongo_uri
 mongo = PyMongo(app)
 db = mongo.db
-
 
 app.config.update({
     'MAIL_SERVER': os.getenv('MAIL_SERVER', 'smtp.gmail.com'),
@@ -79,7 +82,7 @@ def hash_otp(otp):
     """✅ ADDED: SHA256 hash for resend-otp"""
     return hashlib.sha256(otp.encode()).hexdigest()
 
-# 🔄 NEW: /newlogin - NO DATABASE UNTIL VERIFIED!
+# ========== ORIGINAL ROUTES (UNCHANGED) ==========
 @app.route("/newlogin", methods=["POST"])
 def newlogin():
     try:
@@ -87,7 +90,6 @@ def newlogin():
         if not data:
             return jsonify({"status": "invalid_json"}), 400
         
-        # ✅ EXTRACT variables FIRST (no yellow line!)
         username = data.get("username", "").strip()
         password = data.get("password", "")
         name = data.get("name", "").strip()
@@ -97,7 +99,6 @@ def newlogin():
         year = data.get("year", "").strip()
         major = data.get("major", "").strip()
         
-        # Your existing validation (unchanged)
         if not all([username, password, name, email, phoneNumber, college, year, major]):
             return jsonify({"status": "please_fill_all_fields"}), 400
         
@@ -114,21 +115,18 @@ def newlogin():
         if db.test.find_one({"email": email}):
             return jsonify({"status": "email_registered"}), 400
         
-        # Generate OTP
         otp = generate_otp()
         expires = int((datetime.now(UTC) + timedelta(minutes=10)).timestamp() * 1000)
         data_str = f"{email}.{otp}.{expires}"
         hash_value = hmac.new(app.secret_key.encode(), data_str.encode(), hashlib.sha256).hexdigest()
         otp_token = f"{hash_value}.{expires}"
         
-        # ✅ STORE in memory
         pending_users[username] = {
             'user_data': data,
             'otp_token': otp_token,
             'created': datetime.now(UTC)
         }
         
-        # Send email
         try:
             msg = Message(subject="Verify Email - OTP", recipients=[email], sender=app.config['MAIL_USERNAME'])
             msg.body = f"Your OTP: {otp}\nUsername: {username}\nValid 10 min."
@@ -136,17 +134,15 @@ def newlogin():
         except:
             return jsonify({"status": "email_service_error"}), 500
         
-        # ✅ NO YELLOW LINE - username defined above!
         return jsonify({
             "status": "otp_sent",
             "message": "OTP sent to email!",
-            "username": username  # ✅ PERFECTLY VALID!
+            "username": username
         }), 200
         
     except Exception as e:
         return jsonify({"status": "internal_error"}), 500
 
-# 🔄 NEW: /verify-otp - Verify THEN save to DB
 @app.route("/verify-otp", methods=["POST"])
 def verify_otp():
     try:
@@ -154,11 +150,9 @@ def verify_otp():
         username = data.get("username", "").strip()
         otp = data.get("otp", "").strip()
         
-        # ✅ PERFECT UX: Username + OTP ONLY!
         if not username or not otp or len(otp) != 6:
             return jsonify({"status": "invalid_otp_format"}), 400
         
-        # Lookup stored user data
         if username not in pending_users:
             return jsonify({"status": "user_not_found"}), 404
         
@@ -167,7 +161,6 @@ def verify_otp():
         user_data = user_info['user_data']
         email = user_data.get("email", "").strip()
         
-        # Verify token expiry & hash
         try:
             hash_value, expires_str = otp_token.split(".")
             expires = int(expires_str)
@@ -186,7 +179,6 @@ def verify_otp():
         ).hexdigest()
         
         if expected_hash == hash_value:
-            # Save to database
             db_user = {
                 "_id": username,
                 "password": generate_password_hash(user_data["password"], method='pbkdf2:sha256:600000'),
@@ -202,8 +194,6 @@ def verify_otp():
             }
             
             db.test.insert_one(db_user)
-            
-            # Cleanup
             del pending_users[username]
             
             return jsonify({
@@ -311,6 +301,208 @@ def get_user(username):
         return jsonify({"status": "not_found"}), 404
     except Exception as e:
         app.logger.error(f"Get user error: {str(e)}")
+        return jsonify({"status": "internal_error"}), 500
+
+# ========== FORGOT PASSWORD ROUTES ==========
+@app.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    """Send OTP to user's email for password reset"""
+    try:
+        data = request.get_json()
+        email = data.get("email", "").strip()
+        
+        if not email:
+            return jsonify({"status": "email_required"}), 400
+        
+        is_valid_email_result, email_msg = is_valid_email(email)
+        if not is_valid_email_result:
+            return jsonify({"status": "invalid_email", "message": email_msg}), 400
+        
+        user = db.test.find_one({"email": email, "is_verified": True})
+        if not user:
+            return jsonify({"status": "user_not_found"}), 404
+        
+        username = user["_id"]
+        
+        otp = generate_otp()
+        expires = int((datetime.now(UTC) + timedelta(minutes=10)).timestamp() * 1000)
+        data_str = f"{email}.{otp}.{expires}"
+        hash_value = hmac.new(app.secret_key.encode(), data_str.encode(), hashlib.sha256).hexdigest()
+        otp_token = f"{hash_value}.{expires}"
+        
+        forgot_password_requests[email] = {
+            'username': username,
+            'otp_token': otp_token,
+            'created': datetime.now(UTC)
+        }
+        
+        try:
+            msg = Message(
+                subject="Password Reset OTP", 
+                recipients=[email],
+                sender=app.config['MAIL_USERNAME']
+            )
+            msg.body = f"""Password Reset OTP: {otp}
+
+This OTP is valid for 10 minutes only.
+Username: {username}
+
+If you didn't request this, please ignore this email."""
+            mail.send(msg)
+            
+            return jsonify({
+                "status": "otp_sent", 
+                "message": "Password reset OTP sent to your email!",
+                "email": email
+            }), 200
+            
+        except Exception as e:
+            return jsonify({"status": "email_service_error"}), 500
+            
+    except Exception as e:
+        return jsonify({"status": "internal_error"}), 500
+
+@app.route("/verify-reset-otp", methods=["POST"])
+def verify_reset_otp():
+    """Verify OTP and allow password reset + RESEND OPTION"""
+    try:
+        data = request.get_json()
+        email = data.get("email", "").strip()
+        otp = data.get("otp", "").strip()
+        action = data.get("action", "").strip()  # "verify" or "resend"
+        
+        if not email:
+            return jsonify({"status": "email_required"}), 400
+        
+        # ========== RESEND OTP LOGIC ==========
+        if action == "resend":
+            if email not in forgot_password_requests:
+                return jsonify({"status": "no_forgot_request"}), 404
+            
+            user = db.test.find_one({"email": email, "is_verified": True})
+            if not user:
+                return jsonify({"status": "user_not_found"}), 404
+            
+            username = user["_id"]
+            
+            otp = generate_otp()
+            expires = int((datetime.now(UTC) + timedelta(minutes=10)).timestamp() * 1000)
+            data_str = f"{email}.{otp}.{expires}"
+            hash_value = hmac.new(app.secret_key.encode(), data_str.encode(), hashlib.sha256).hexdigest()
+            otp_token = f"{hash_value}.{expires}"
+            
+            forgot_password_requests[email] = {
+                'username': username,
+                'otp_token': otp_token,
+                'created': datetime.now(UTC)
+            }
+            
+            try:
+                msg = Message(
+                    subject="Password Reset OTP - RESENT", 
+                    recipients=[email],
+                    sender=app.config['MAIL_USERNAME']
+                )
+                msg.body = f"""Password Reset OTP (RESENT): {otp}
+
+This OTP is valid for 10 minutes only.
+Username: {username}
+
+If you didn't request this, please ignore this email."""
+                mail.send(msg)
+                
+                return jsonify({
+                    "status": "otp_resent",
+                    "message": "New password reset OTP sent to your email!",
+                    "email": email
+                }), 200
+                
+            except Exception as e:
+                return jsonify({"status": "email_service_error"}), 500
+        
+        # ========== ORIGINAL VERIFY OTP LOGIC ==========
+        if not otp or len(otp) != 6:
+            return jsonify({"status": "invalid_otp_format"}), 400
+        
+        if email not in forgot_password_requests:
+            return jsonify({"status": "request_not_found"}), 404
+        
+        request_info = forgot_password_requests[email]
+        username = request_info['username']
+        otp_token = request_info['otp_token']
+        
+        try:
+            hash_value, expires_str = otp_token.split(".")
+            expires = int(expires_str)
+        except:
+            return jsonify({"status": "invalid_token"}), 400
+        
+        now = int(datetime.now(UTC).timestamp() * 1000)
+        if now > expires:
+            del forgot_password_requests[email]
+            return jsonify({"status": "otp_expired"}), 400
+        
+        data_str = f"{email}.{otp}.{expires}"
+        expected_hash = hmac.new(
+            app.secret_key.encode(), 
+            data_str.encode(), 
+            hashlib.sha256
+        ).hexdigest()
+        
+        if expected_hash == hash_value:
+            return jsonify({
+                "status": "otp_verified",
+                "message": "OTP verified! Enter new password.",
+                "username": username,
+                "email": email
+            }), 200
+        else:
+            return jsonify({"status": "invalid_otp"}), 400
+            
+    except Exception as e:
+        return jsonify({"status": "internal_error"}), 500
+
+@app.route("/reset-password", methods=["POST"])
+def reset_password():
+    """Update password in database after OTP verification"""
+    try:
+        data = request.get_json()
+        email = data.get("email", "").strip()
+        username = data.get("username", "").strip()
+        new_password = data.get("new_password", "")
+        
+        if not all([email, username, new_password]):
+            return jsonify({"status": "missing_fields"}), 400
+        
+        is_valid_pwd, pwd_msg = is_valid_password(new_password)
+        if not is_valid_pwd:
+            return jsonify({"status": "invalid_password", "message": pwd_msg}), 400
+        
+        if email not in forgot_password_requests:
+            return jsonify({"status": "session_expired"}), 400
+        
+        request_info = forgot_password_requests[email]
+        if request_info['username'] != username:
+            return jsonify({"status": "invalid_user"}), 400
+        
+        result = db.test.update_one(
+            {"_id": username},
+            {"$set": {
+                "password": generate_password_hash(new_password, method='pbkdf2:sha256:600000'),
+                "failed_attempts": 0
+            }}
+        )
+        
+        if result.modified_count == 1:
+            del forgot_password_requests[email]
+            return jsonify({
+                "status": "password_updated",
+                "message": "Password updated successfully! You can now login."
+            }), 200
+        else:
+            return jsonify({"status": "update_failed"}), 500
+            
+    except Exception as e:
         return jsonify({"status": "internal_error"}), 500
 
 if __name__ == "__main__":
