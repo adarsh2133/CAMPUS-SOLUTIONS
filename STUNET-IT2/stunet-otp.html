@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="STUNET - Verify Email OTP">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>STUNET - Verify OTP</title>
+    <link rel="stylesheet" href="stunet.css">
+    <link rel="stylesheet" href="stunet-signup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa3IW2lEnf3lGY6i7IeJI40W0yVxUQogQ5G92d8OxkZeP9c1bUSkb72l/qi9JLVLw3Jii9tcEKMOutZrZsw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <style>
+        .otp-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        .otp-input::placeholder {
+            color: #606060;
+        }
+
+        .resend-section {
+            text-align: center;
+            font-size: 13px;
+            color: #707070;
+        }
+
+        .resend-link {
+            background: none;
+            border: none;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .resend-link:hover:not(:disabled) {
+            color: #e0e0e0;
+            text-decoration: underline;
+        }
+
+        .resend-link:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            color: #999999;
+            font-weight: 500;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .otp-inputs {
+                gap: 8px;
+            }
+
+            .otp-input {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .otp-inputs {
+                gap: 6px;
+            }
+
+            .otp-input {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .resend-section {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="gradient-bg"></div>
+
+        <div class="layout-wrapper">
+            <!-- LEFT SECTION - BRANDING -->
+            <section class="left-section" aria-hidden="true">
+                <div class="chess-pieces-container signup-mode">
+                    <div class="chess-piece queen-piece-wrapper signup-straight">
+                        <img src="queen-piece.png" alt="Queen Chess Piece" class="chess-piece-img queen-piece" loading="lazy">
+                    </div>
+                    <div class="chess-piece rook-piece-wrapper signup-straight">
+                        <img src="rook-piece.png" alt="Rook Chess Piece" class="chess-piece-img rook-piece" loading="lazy">
+                    </div>
+                    <div class="chess-piece king-piece-wrapper signup-straight">
+                        <img src="king-piece.png" alt="King Chess Piece" class="chess-piece-img king-piece" loading="lazy">
+                    </div>
+                </div>
+                <div id="three-container" role="presentation"></div>
+                <div class="branding-content">
+                    <div class="logo-wrapper">
+                        <h1 class="logo-text">
+                            <span class="logo-stu">STU</span><span class="logo-net">NET</span>
+                        </h1>
+                        <p class="tagline">
+                            <span class="tagline-karma">STUDENT'S &nbsp; </span><span class="tagline-sarvoparri">OWNED NETWORK</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT SECTION - OTP VERIFICATION -->
+            <main class="right-section">
+                <div class="form-wrapper">
+                    <article class="login-frame">
+                        <header class="login-header">
+                            <h2>Verify Email</h2>
+                            <p class="login-subtitle">Enter the OTP sent to your email</p>
+                        </header>
+
+                        <form class="login-form" id="otpForm" novalidate>
+                            <div class="otp-container">
+                                <p class="login-subtitle" style="text-align: center; margin: 0;">Enter 6-digit OTP</p>
+                                
+                                <div class="otp-inputs">
+                                    <input type="text" class="otp-input" id="otp1" maxlength="1" placeholder="0" inputmode="numeric">
+                                    <input type="text" class="otp-input" id="otp2" maxlength="1" placeholder="0" inputmode="numeric">
+                                    <input type="text" class="otp-input" id="otp3" maxlength="1" placeholder="0" inputmode="numeric">
+                                    <input type="text" class="otp-input" id="otp4" maxlength="1" placeholder="0" inputmode="numeric">
+                                    <input type="text" class="otp-input" id="otp5" maxlength="1" placeholder="0" inputmode="numeric">
+                                    <input type="text" class="otp-input" id="otp6" maxlength="1" placeholder="0" inputmode="numeric">
+                                </div>
+
+                                <span class="error-message" id="otpError" role="alert" aria-live="polite"></span>
+
+                                <button type="submit" class="btn-login" aria-label="Verify OTP">
+                                    <span>Verify OTP</span>
+                                </button>
+
+                                <div class="resend-section">
+                                    <p>Didn't receive OTP? <button type="button" class="resend-link" id="resendBtn">Resend</button></p>
+                                    <p class="timer">Expires in <span id="timer">10:00</span></p>
+                                </div>
+                            </div>
+                        </form>
+                    </article>
+
+                    <!-- Footer -->
+                    <footer class="footer-text">
+                        <p>Powered by <span>PinaakaAI</span></p>
+                    </footer>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="stunet-otp.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
+</body>
+</html>

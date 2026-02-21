@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .community-layout { display:grid; grid-template-columns:1fr 300px; gap:20px; }
+
+  .forum-list { display:flex; flex-direction:column; gap:12px; }
+  .post-card {
+    background:var(--surface);
+    border:1px solid var(--border-sm);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    cursor:pointer;
+    transition:all 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .post-card:hover { border-color:var(--accent-border); transform:translateY(-2px); box-shadow:0 8px 24px rgba(61,235,188,0.05); }
+  .post-top { display:flex; align-items:flex-start; gap:14px; margin-bottom:12px; }
+  .post-avatar {
+    width:40px; height:40px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:14px; color:#0a0a0f;
+  }
+  .post-meta { flex:1; min-width:0; }
+  .post-author { font-size:14px; font-weight:600; margin-bottom:3px; }
+  .post-info { font-size:12px; color:var(--text3); }
+  .post-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+  .post-excerpt { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:12px; }
+  .post-footer { display:flex; align-items:center; gap:16px; }
+  .post-stat { font-size:12px; color:var(--text3); }
+  .post-stat i { margin-right:4px; }
+  .post-stat.accent { color:var(--accent); }
+  .hot-badge { background:rgba(247,201,72,0.15); color:var(--yellow); font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:auto; }
+  .new-post-badge { background:var(--accent-dim); color:var(--accent); font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:auto; border:1px solid var(--accent-border); }
+
+  .compose-box {
+    background:var(--surface);
+    border:1px solid var(--accent-border);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:20px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .compose-box h3 { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; margin-bottom:12px; }
+  .compose-input {
+    width:100%; background:var(--surface2); border:1px solid var(--border-sm);
+    border-radius:10px; padding:12px; color:var(--text); font-size:13px;
+    font-family:'DM Sans',sans-serif; resize:none; outline:none;
+    transition:border 0.2s; min-height:80px;
+  }
+  .compose-input:focus { border-color:var(--accent-border); }
+  .compose-actions { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
+  .compose-tools { display:flex; gap:8px; }
+  .tool-btn { background:none; border:none; color:var(--text3); font-size:16px; cursor:pointer; padding:4px 6px; border-radius:6px; transition:all 0.15s; }
+  .tool-btn:hover { background:var(--surface2); color:var(--accent); }
+
+  /* SIDEBAR */
+  .side-card { background:var(--surface); border:1px solid var(--border-sm); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; animation: fadeUp 0.4s ease both; }
+  .side-card-header { padding:16px 18px; border-bottom:1px solid var(--border-sm); }
+  .side-card-header h3 { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+  .forum-item { display:flex; align-items:center; gap:10px; padding:12px 18px; border-bottom:1px solid var(--border-sm); cursor:pointer; transition:background 0.15s; }
+  .forum-item:last-child { border-bottom:none; }
+  .forum-item:hover { background:var(--surface2); }
+  .forum-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .forum-name { font-size:13px; font-weight:600; margin-bottom:2px; }
+  .forum-count { font-size:11px; color:var(--text3); }
+  .forum-count b { color:var(--accent); }
+
+  .online-user { display:flex; align-items:center; gap:10px; padding:10px 18px; border-bottom:1px solid var(--border-sm); cursor:pointer; transition:background 0.15s; }
+  .online-user:last-child { border-bottom:none; }
+  .online-user:hover { background:var(--surface2); }
+  .online-dot-sm { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .ou-name { font-size:13px; font-weight:500; flex:1; }
+  .ou-role { font-size:11px; color:var(--text3); }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">STU<span>NET</span></div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="index.html"><span class="icon"><i class="fa-solid fa-bolt"></i></span> Dashboard</a>
+    <a class="nav-item" href="teammates.html"><span class="icon"><i class="fa-solid fa-users"></i></span> Find Teammates <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="competitions.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span> Competitions</a>
+    <a class="nav-item active" href="community.html"><span class="icon"><i class="fa-solid fa-comments"></i></span> Community <span class="nav-badge">3</span></a>
+    <div class="nav-label" style="margin-top:16px;">My Space</div>
+    <a class="nav-item" href="profile.html"><span class="icon"><i class="fa-solid fa-user"></i></span> My Profile</a>
+    <a class="nav-item" href="team.html"><span class="icon"><i class="fa-solid fa-people-group"></i></span> My Team</a>
+    <a class="nav-item" href="projects.html"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Projects</a>
+    <a class="nav-item" href="achievements.html"><span class="icon"><i class="fa-solid fa-chart-simple"></i></span> Achievements</a>
+    <div class="nav-label" style="margin-top:16px;">More</div>
+    <a class="nav-item" href="resources.html"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> Resources</a>
+    <a class="nav-item" href="settings.html"><span class="icon"><i class="fa-solid fa-gear"></i></span> Settings</a>
+  </nav>
+  <div class="sidebar-user"><div class="avatar">AP</div><div class="sidebar-user-info"><div class="name">Arjun Patel</div><div class="role">Full Stack · Delhi</div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <h1>Community</h1>
+    <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><span>Search discussions…</span></div>
+    <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar" style="width:38px;height:38px;font-size:13px;cursor:pointer;">AP</div>
+  </header>
+
+  <div class="content">
+    <div class="community-layout">
+      <div>
+        <div class="compose-box">
+          <h3><i class="fa-solid fa-pen-to-square" style="color:var(--accent);margin-right:8px;"></i>Share something with the community</h3>
+          <textarea class="compose-input" placeholder="Start a discussion, share a resource, or ask a question…"></textarea>
+          <div class="compose-actions">
+            <div class="compose-tools">
+              <button class="tool-btn" title="Image"><i class="fa-solid fa-image"></i></button>
+              <button class="tool-btn" title="Link"><i class="fa-solid fa-link"></i></button>
+              <button class="tool-btn" title="Code"><i class="fa-solid fa-code"></i></button>
+              <button class="tool-btn" title="Poll"><i class="fa-solid fa-chart-bar"></i></button>
+            </div>
+            <button class="btn-primary" style="padding:8px 20px;font-size:13px;">Post</button>
+          </div>
+        </div>
+
+        <div class="forum-list">
+          <div class="post-card" style="animation-delay:0.05s">
+            <div class="post-top">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">RK</div>
+              <div class="post-meta">
+                <div class="post-author">Rohan Kumar <span style="color:var(--text3);font-weight:400">·</span> <span style="color:var(--text3);font-size:12px;">IIT Delhi</span></div>
+                <div class="post-info">AI/ML Discussion · 2 hours ago</div>
+              </div>
+              <span class="hot-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+            </div>
+            <div class="post-title">Best strategies for LLM fine-tuning with limited compute?</div>
+            <div class="post-excerpt">I've been experimenting with LoRA adapters for fine-tuning Llama 3 on domain-specific data and wanted to share some findings. The key insight was using 4-bit quantization alongside gradient checkpointing…</div>
+            <div class="post-footer">
+              <span class="post-stat"><i class="fa-solid fa-arrow-up"></i> 142</span>
+              <span class="post-stat"><i class="fa-regular fa-comment"></i> 38 replies</span>
+              <span class="post-stat"><i class="fa-regular fa-eye"></i> 1.2k views</span>
+              <div class="tags" style="margin-left:auto"><span class="tag">LLMs</span><span class="tag">Python</span></div>
+            </div>
+          </div>
+
+          <div class="post-card" style="animation-delay:0.1s">
+            <div class="post-top">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#f06bae,#f7c948);">PS</div>
+              <div class="post-meta">
+                <div class="post-author">Priya Sharma <span style="color:var(--text3);font-weight:400">·</span> <span style="color:var(--text3);font-size:12px;">NSIT Delhi</span></div>
+                <div class="post-info">Team Formation · 4 hours ago</div>
+              </div>
+              <span class="new-post-badge">New</span>
+            </div>
+            <div class="post-title">Looking for ML engineer for HackDreamUp — we have UI/UX and PM!</div>
+            <div class="post-excerpt">Our team is ready to go for HackDreamUp 2024 but we're missing an ML engineer. We're building an adaptive learning platform. Our team has strong design and product skills. Comment or DM if interested!</div>
+            <div class="post-footer">
+              <span class="post-stat"><i class="fa-solid fa-arrow-up"></i> 67</span>
+              <span class="post-stat"><i class="fa-regular fa-comment"></i> 14 replies</span>
+              <span class="post-stat"><i class="fa-regular fa-eye"></i> 340 views</span>
+              <div class="tags" style="margin-left:auto"><span class="tag">Team</span><span class="tag">Hackathon</span></div>
+            </div>
+          </div>
+
+          <div class="post-card" style="animation-delay:0.15s">
+            <div class="post-top">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#4fd1c5,#3debbc);">AM</div>
+              <div class="post-meta">
+                <div class="post-author">Aditya Mehta <span style="color:var(--text3);font-weight:400">·</span> <span style="color:var(--text3);font-size:12px;">BITS Pilani</span></div>
+                <div class="post-info">Resources & Tips · 6 hours ago</div>
+              </div>
+            </div>
+            <div class="post-title">Complete roadmap for competitive programming — from beginner to ICPC</div>
+            <div class="post-excerpt">After 3 years of competitive programming and qualifying for ICPC Regionals twice, I've compiled a comprehensive roadmap. Starting from basic DSA, going through advanced graph theory, segment trees, and contest strategy…</div>
+            <div class="post-footer">
+              <span class="post-stat"><i class="fa-solid fa-arrow-up"></i> 289</span>
+              <span class="post-stat"><i class="fa-regular fa-comment"></i> 54 replies</span>
+              <span class="post-stat"><i class="fa-regular fa-eye"></i> 4.1k views</span>
+              <div class="tags" style="margin-left:auto"><span class="tag">CP</span><span class="tag">Algorithms</span></div>
+            </div>
+          </div>
+
+          <div class="post-card" style="animation-delay:0.2s">
+            <div class="post-top">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#f7c948,#3debbc);">NK</div>
+              <div class="post-meta">
+                <div class="post-author">Nisha Kapoor <span style="color:var(--text3);font-weight:400">·</span> <span style="color:var(--text3);font-size:12px;">VIT Vellore</span></div>
+                <div class="post-info">Web3 & Blockchain · 1 day ago</div>
+              </div>
+              <span class="hot-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+            </div>
+            <div class="post-title">Learned Solidity in 30 days — here's my honest review and resources</div>
+            <div class="post-excerpt">Just completed the Web3 Build Challenge prep and wanted to document my journey. Coming from a React background, Solidity has a surprisingly gentle learning curve if you approach it right. Key resources I used…</div>
+            <div class="post-footer">
+              <span class="post-stat"><i class="fa-solid fa-arrow-up"></i> 198</span>
+              <span class="post-stat"><i class="fa-regular fa-comment"></i> 41 replies</span>
+              <span class="post-stat"><i class="fa-regular fa-eye"></i> 2.8k views</span>
+              <div class="tags" style="margin-left:auto"><span class="tag">Solidity</span><span class="tag">Web3</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="side-card">
+          <div class="side-card-header"><h3><i class="fa-solid fa-layer-group" style="color:var(--accent);margin-right:8px;"></i>Forums</h3></div>
+          <div class="forum-item">
+            <div class="forum-icon" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-brain"></i></div>
+            <div><div class="forum-name">AI/ML Discussion</div><div class="forum-count"><b>2.4k</b> posts</div></div>
+          </div>
+          <div class="forum-item">
+            <div class="forum-icon" style="background:rgba(247,201,72,0.1);color:var(--yellow)"><i class="fa-solid fa-people-group"></i></div>
+            <div><div class="forum-name">Team Formation</div><div class="forum-count"><b>890</b> posts</div></div>
+          </div>
+          <div class="forum-item">
+            <div class="forum-icon" style="background:rgba(240,107,174,0.1);color:var(--accent2)"><i class="fa-solid fa-book"></i></div>
+            <div><div class="forum-name">Resources & Tips</div><div class="forum-count"><b>1.1k</b> posts</div></div>
+          </div>
+          <div class="forum-item">
+            <div class="forum-icon" style="background:rgba(79,209,197,0.1);color:var(--accent3)"><i class="fa-brands fa-ethereum"></i></div>
+            <div><div class="forum-name">Web3 & Blockchain</div><div class="forum-count"><b>567</b> posts</div></div>
+          </div>
+          <div class="forum-item">
+            <div class="forum-icon" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-briefcase"></i></div>
+            <div><div class="forum-name">Jobs & Internships</div><div class="forum-count"><b>1.8k</b> posts</div></div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-card-header"><h3><i class="fa-solid fa-circle" style="color:var(--accent);margin-right:8px;font-size:10px;"></i>Online Now (24)</h3></div>
+          <div class="online-user">
+            <div class="online-dot-sm"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3debbc,#0fa882);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0a0a0f;">RK</div>
+            <div><div class="ou-name">Rohan Kumar</div><div class="ou-role">ML Engineer</div></div>
+          </div>
+          <div class="online-user">
+            <div class="online-dot-sm"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f06bae,#f7c948);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0a0a0f;">PS</div>
+            <div><div class="ou-name">Priya Sharma</div><div class="ou-role">UI/UX Designer</div></div>
+          </div>
+          <div class="online-user">
+            <div class="online-dot-sm"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#4fd1c5,#3debbc);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0a0a0f;">AM</div>
+            <div><div class="ou-name">Aditya Mehta</div><div class="ou-role">Full Stack Dev</div></div>
+          </div>
+          <div class="online-user">
+            <div class="online-dot-sm"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f7c948,#3debbc);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0a0a0f;">NK</div>
+            <div><div class="ou-name">Nisha Kapoor</div><div class="ou-role">Blockchain Dev</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
