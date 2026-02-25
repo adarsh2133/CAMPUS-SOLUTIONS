@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Discussion Forum - Stunnect</title>
+    <link rel="icon" href="Stun-nect.jpeg">
+    <link rel="stylesheet" href="new1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="header">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>Stunnect</h1>
+                </div>
+                <div>
+                    <a href="new.html"><img src="Stun-nect.jpeg" style="height: 30px; width: 30px;margin-right: 1300px ;"></a>
+                </div>
+                <div class="profile-nav">
+                    <div id="profile-section">
+                        <!-- Profile info will be dynamically added here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workDiv">
+            <div class="a1">
+                <i class="fas fa-comments"></i> COLLEGE DISCUSSION FORUM
+            </div>
+        </div>
+
+        <div class="forum-container">
+            <div class="forum-header">
+                <h3>Welcome to College Discussion Forum</h3>
+                <p>Connect with peers and discuss college projects, assignments, and more!</p>
+            </div>
+
+            <div class="chat-box">
+                <!-- Chat messages will be displayed here dynamically -->
+            </div>
+
+            <div class="message-input">
+                <input type="text" placeholder="Type your message..." id="message-input">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2025 Stunnect. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var message = document.getElementById('message-input').value;
+            if (message.trim() != "") {
+                var chatBox = document.querySelector('.chat-box');
+                var messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                document.getElementById('message-input').value = "";
+            }
+        }
+    </script>
+</body>
+
+</html>

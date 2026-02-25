@@ -1,0 +1,281 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Main Container */
+body {
+    font-family: 'Prompt', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.mainDiv {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Header Section */
+.header {
+    background-color:#232f3e;
+    color: orangered;
+    padding: 20px 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo h1 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.profile-nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Search Section */
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.search-bar {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-button {
+    padding: 10px;
+    background-color: #0066cc;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+/* Navigation Section */
+.workDiv {
+    display: flex;
+    justify-content: space-around;
+    background-color: #e7e7e7;
+    padding: 10px 0;
+}
+
+.a1 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    position: relative;
+}
+
+.a1 i {
+    margin-right: 8px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    min-width: 200px;
+}
+
+.a1:hover .dropdown {
+    display: block;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown a:hover {
+    background-color: #f4f4f4;
+}
+
+/* Main Content Section */
+.mainContent {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.content-sections {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.section {
+    width: 30%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.section p {
+    font-size: 16px;
+}
+
+/* Call to Action Section */
+.cta {
+    background-color: #0066cc;
+    color: orangered;
+    padding: 30px 0;
+    margin-top: 40px;
+}
+
+.cta h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.cta p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #0066cc;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Forum Section */
+.forum-container {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.forum-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.forum-header h3 {
+    font-size: 24px;
+    color: orangered;
+}
+
+.forum-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+.chat-box {
+    margin: 20px 0;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.chat-box div {
+    margin: 5px 0;
+    padding: 8px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.message-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.message-input input {
+    width: 85%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.message-input button {
+    width: 10%;
+    padding: 10px;
+    background-color: #0066cc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #0055b3;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 30px 20px;
+    background-color: #f7f7f7;
+    text-align: center;
+}
+
+.testimonial {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-style: italic;
+}
+
+.testimonial strong {
+    display: block;
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Footer Section */
+footer {
+    background-color: #232f3e;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #ccc;
+}
+
+.social-icon {
+    font-size: 20px;
+    margin: 0 10px;
+}
