@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — Resources</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .resource-hero {
+    background:linear-gradient(120deg,rgba(61,235,188,0.1),rgba(79,209,197,0.06));
+    border:1px solid var(--accent-border); border-radius:var(--radius);
+    padding:28px 32px; margin-bottom:24px;
+    display:flex; align-items:center; justify-content:space-between;
+    animation: fadeUp 0.3s ease both;
+  }
+  .resource-hero h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; margin-bottom:6px; }
+  .resource-hero p { font-size:14px; color:var(--text3); }
+
+  .category-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; animation: fadeUp 0.35s ease both; }
+  .cat-tab { padding:8px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid var(--border-sm); background:var(--surface); color:var(--text3); transition:all 0.15s; font-family:'DM Sans',sans-serif; }
+  .cat-tab:hover { border-color:var(--accent-border); color:var(--accent); }
+  .cat-tab.active { background:var(--accent-dim); border-color:var(--accent-border); color:var(--accent); }
+
+  .resource-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .resource-card {
+    background:var(--surface); border:1px solid var(--border-sm);
+    border-radius:var(--radius); padding:22px;
+    cursor:pointer; transition:all 0.2s;
+    animation: fadeUp 0.4s ease both;
+    display:flex; flex-direction:column;
+  }
+  .resource-card:hover { border-color:var(--accent-border); transform:translateY(-2px); box-shadow:0 8px 24px rgba(61,235,188,0.06); }
+  .rc-top { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; }
+  .rc-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .rc-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; }
+  .rc-by { font-size:11px; color:var(--text3); }
+  .rc-desc { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:14px; flex:1; }
+  .rc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--border-sm); }
+  .rc-meta { font-size:11px; color:var(--text3); }
+  .rc-meta i { margin-right:4px; }
+  .rc-type { font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; }
+  .type-free { background:rgba(61,235,188,0.12); color:var(--accent); border:1px solid var(--accent-border); }
+  .type-paid { background:rgba(247,201,72,0.12); color:var(--yellow); }
+  .type-tool { background:rgba(240,107,174,0.12); color:var(--accent2); }
+  .type-repo { background:rgba(79,209,197,0.12); color:var(--accent3); }
+
+  .featured-section { background:linear-gradient(135deg,rgba(61,235,188,0.08),rgba(15,168,130,0.04)); border:1px solid var(--accent-border); border-radius:var(--radius); padding:24px; margin-bottom:24px; animation: fadeUp 0.35s ease both; }
+  .featured-section h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:16px; }
+  .featured-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .feat-item { background:var(--surface); border:1px solid var(--border-sm); border-radius:10px; padding:14px; cursor:pointer; transition:all 0.15s; }
+  .feat-item:hover { border-color:var(--accent-border); }
+  .feat-item .icon { font-size:24px; margin-bottom:8px; }
+  .feat-item .name { font-size:13px; font-weight:700; margin-bottom:3px; }
+  .feat-item .cat { font-size:11px; color:var(--text3); }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">STU<span>NET</span></div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="index.html"><span class="icon"><i class="fa-solid fa-bolt"></i></span> Dashboard</a>
+    <a class="nav-item" href="teammates.html"><span class="icon"><i class="fa-solid fa-users"></i></span> Find Teammates <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="competitions.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span> Competitions</a>
+    <a class="nav-item" href="community.html"><span class="icon"><i class="fa-solid fa-comments"></i></span> Community <span class="nav-badge">3</span></a>
+    <div class="nav-label" style="margin-top:16px;">My Space</div>
+    <a class="nav-item" href="profile.html"><span class="icon"><i class="fa-solid fa-user"></i></span> My Profile</a>
+    <a class="nav-item" href="team.html"><span class="icon"><i class="fa-solid fa-people-group"></i></span> My Team</a>
+    <a class="nav-item" href="projects.html"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Projects</a>
+    <a class="nav-item" href="achievements.html"><span class="icon"><i class="fa-solid fa-chart-simple"></i></span> Achievements</a>
+    <div class="nav-label" style="margin-top:16px;">More</div>
+    <a class="nav-item active" href="resources.html"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> Resources</a>
+    <a class="nav-item" href="settings.html"><span class="icon"><i class="fa-solid fa-gear"></i></span> Settings</a>
+  </nav>
+  <div class="sidebar-user"><div class="avatar">AP</div><div class="sidebar-user-info"><div class="name">Arjun Patel</div><div class="role">Full Stack · Delhi</div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <h1>Resources</h1>
+    <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><span>Search resources…</span></div>
+    <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar" style="width:38px;height:38px;font-size:13px;cursor:pointer;">AP</div>
+  </header>
+
+  <div class="content">
+    <div class="resource-hero">
+      <div>
+        <h2><i class="fa-solid fa-graduation-cap" style="color:var(--accent);margin-right:10px;"></i>Learning Hub</h2>
+        <p>Curated courses, tools, repos & guides for student developers.</p>
+      </div>
+      <div style="display:flex;gap:16px;">
+        <div style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent);">240+</div><div style="font-size:11px;color:var(--text3);">Resources</div></div>
+        <div style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--yellow);">80%</div><div style="font-size:11px;color:var(--text3);">Free</div></div>
+      </div>
+    </div>
+
+    <div class="featured-section">
+      <h3>🔥 Trending This Week</h3>
+      <div class="featured-grid">
+        <div class="feat-item"><div class="icon">🤖</div><div class="name">LangChain Crash Course</div><div class="cat">AI / LLMs · Free</div></div>
+        <div class="feat-item"><div class="icon">⚡</div><div class="name">System Design for Interviews</div><div class="cat">Backend · Free</div></div>
+        <div class="feat-item"><div class="icon">🎨</div><div class="name">Figma Masterclass 2024</div><div class="cat">Design · Free</div></div>
+      </div>
+    </div>
+
+    <div class="category-tabs">
+      <button class="cat-tab active" onclick="setTab(this)">All</button>
+      <button class="cat-tab" onclick="setTab(this)">AI/ML</button>
+      <button class="cat-tab" onclick="setTab(this)">Web Dev</button>
+      <button class="cat-tab" onclick="setTab(this)">Design</button>
+      <button class="cat-tab" onclick="setTab(this)">DevOps</button>
+      <button class="cat-tab" onclick="setTab(this)">Blockchain</button>
+      <button class="cat-tab" onclick="setTab(this)">Career</button>
+      <button class="cat-tab" onclick="setTab(this)">Tools</button>
+    </div>
+
+    <div class="resource-grid">
+      <div class="resource-card" style="animation-delay:0.05s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-brain"></i></div>
+          <div><div class="rc-title">Deep Learning Specialization</div><div class="rc-by">Andrew Ng · Coursera</div></div>
+        </div>
+        <div class="rc-desc">The definitive course for learning neural networks, CNNs, RNNs, and transformers from scratch. Hands-on Python projects throughout.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-regular fa-clock"></i>~55 hrs · <i class="fa-solid fa-star" style="color:var(--yellow);"></i>4.9</div><span class="rc-type type-paid">Paid</span></div>
+      </div>
+
+      <div class="resource-card" style="animation-delay:0.1s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(247,201,72,0.1);color:var(--yellow)"><i class="fa-brands fa-react"></i></div>
+          <div><div class="rc-title">React — The Complete Guide 2024</div><div class="rc-by">Maximilian Schwarzmüller · Udemy</div></div>
+        </div>
+        <div class="rc-desc">Full React course covering Hooks, Redux, React Router, Next.js, and testing. Includes 15 real-world projects and section on React Server Components.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-regular fa-clock"></i>~49 hrs · <i class="fa-solid fa-star" style="color:var(--yellow);"></i>4.8</div><span class="rc-type type-paid">Paid</span></div>
+      </div>
+
+      <div class="resource-card" style="animation-delay:0.15s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-brands fa-github"></i></div>
+          <div><div class="rc-title">Awesome System Design</div><div class="rc-by">GitHub · Open Source</div></div>
+        </div>
+        <div class="rc-desc">Curated list of system design resources including articles, videos, case studies, and interview prep materials. Starred by 50k developers.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-solid fa-star" style="color:var(--yellow);"></i>50k stars</div><span class="rc-type type-repo">Repo</span></div>
+      </div>
+
+      <div class="resource-card" style="animation-delay:0.2s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(240,107,174,0.1);color:var(--accent2)"><i class="fa-solid fa-pen-nib"></i></div>
+          <div><div class="rc-title">Figma for Beginners to Advanced</div><div class="rc-by">Figma · YouTube</div></div>
+        </div>
+        <div class="rc-desc">Official Figma tutorial series covering prototyping, components, auto-layout, and design systems. Perfect for developers getting into design.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-regular fa-clock"></i>~12 hrs · <i class="fa-solid fa-star" style="color:var(--yellow);"></i>4.7</div><span class="rc-type type-free">Free</span></div>
+      </div>
+
+      <div class="resource-card" style="animation-delay:0.25s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(79,209,197,0.1);color:var(--accent3)"><i class="fa-brands fa-docker"></i></div>
+          <div><div class="rc-title">Docker & Kubernetes in Practice</div><div class="rc-by">TechWorld with Nana · YouTube</div></div>
+        </div>
+        <div class="rc-desc">Hands-on DevOps course covering containerisation, orchestration, CI/CD pipelines, and deployment to cloud providers. Real project throughout.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-regular fa-clock"></i>~8 hrs · <i class="fa-solid fa-star" style="color:var(--yellow);"></i>4.8</div><span class="rc-type type-free">Free</span></div>
+      </div>
+
+      <div class="resource-card" style="animation-delay:0.3s">
+        <div class="rc-top">
+          <div class="rc-icon" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-terminal"></i></div>
+          <div><div class="rc-title">Hackathon Survival Guide</div><div class="rc-by">STUNET Community · Free</div></div>
+        </div>
+        <div class="rc-desc">Community-written guide on winning hackathons: idea selection, team dynamics, presentation skills, and tech stack choices. Written by past winners.</div>
+        <div class="rc-footer"><div class="rc-meta"><i class="fa-solid fa-users"></i>2.4k reads · <i class="fa-solid fa-star" style="color:var(--yellow);"></i>4.9</div><span class="rc-type type-free">Free</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  function setTab(el) {
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>

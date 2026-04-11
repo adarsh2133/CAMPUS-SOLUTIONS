@@ -1,0 +1,385 @@
+/* Base Styles with Improved Accessibility */
+:root {
+    --primary-color: #FF5722;
+    --primary-light: #FF8A65;
+    --secondary-color: #232F3E;
+    --accent-color: #4D90FE;
+    --text-dark: #333;
+    --text-medium: #555;
+    --text-light: #777;
+    --bg-light: #f9f9f9;
+    --white: #ffffff;
+    --error-color: #E53935;
+    --success-color: #43A047;
+    --transition-speed: 0.3s;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Prompt', sans-serif;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+    color: var(--text-dark);
+    animation: smoothWave 10s linear infinite;
+  }
+  
+  /* Optimized Gradient Animation */
+  @keyframes smoothWave {
+    0%, 100% {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    }
+    50% {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+    }
+  }
+  
+  /* Logo Styles */
+  .logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+  
+  .logo {
+    color: var(--white);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Main Login Container */
+  .login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .login-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 15s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes rotate {
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Form Header */
+  .login-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .login-header h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  
+  .intro-text {
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    color: var(--text-medium);
+    opacity: 0.9;
+  }
+  
+  /* Form Elements */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .input-group {
+    position: relative;
+  }
+  
+  .input-group label {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    transition: all var(--transition-speed) ease;
+    pointer-events: none;
+    background: var(--white);
+    padding: 0 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--white);
+    transition: all var(--transition-speed) ease;
+  }
+  
+  .input-group input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(77, 144, 254, 0.2);
+  }
+  
+  .input-group input:focus + label,
+  .input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 35px;
+    font-size: 0.75rem;
+    color: var(--accent-color);
+  }
+  
+  .input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    transition: color var(--transition-speed) ease;
+  }
+  
+  .input-group input:focus ~ i {
+    color: var(--accent-color);
+  }
+  
+  /* Button Styles */
+  .submit-btn .btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--accent-color), #357AE8);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .submit-btn .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .submit-btn .btn:active {
+    transform: translateY(0);
+  }
+  
+  /* Link Styles */
+  .forgot-password, .new-account {
+    text-align: center;
+  }
+  
+  .forgot-password a, .new-account a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color var(--transition-speed) ease;
+    position: relative;
+  }
+  
+  .forgot-password a:hover, .new-account a:hover {
+    color: var(--secondary-color);
+  }
+  
+  .forgot-password a::after, .new-account a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--secondary-color);
+    transition: width var(--transition-speed) ease;
+  }
+  
+  .forgot-password a:hover::after, .new-account a:hover::after {
+    width: 100%;
+  }
+  
+  /* Social Login Options */
+  .social-login {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .social-login p {
+    color: var(--text-medium);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  
+  .social-login p::before, .social-login p::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+    position: absolute;
+    top: 50%;
+    width: 30%;
+  }
+  
+  .social-login p::before {
+    left: 0;
+  }
+  
+  .social-login p::after {
+    right: 0;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all var(--transition-speed) ease;
+    color: var(--text-dark);
+  }
+  
+  .social-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 2rem;
+    }
+    
+    .login-header h2 {
+      font-size: 1.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      padding: 15px;
+    }
+    
+    .login-container {
+      padding: 1.5rem;
+      border-radius: 12px;
+    }
+    
+    .input-group input {
+      padding: 12px 12px 12px 40px;
+    }
+    
+    .input-group label {
+      left: 40px;
+    }
+    
+    .submit-btn .btn {
+      padding: 12px;
+    }
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Loading State */
+  .loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  
+  .loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Error/Success States */
+  .input-group.error input {
+    border-color: var(--error-color);
+  }
+  
+  .input-group.error i {
+    color: var(--error-color);
+  }
+  
+  .error-message {
+    color: var(--error-color);
+    font-size: 0.75rem;
+    margin-top: 5px;
+    display: none;
+  }
+  
+  .input-group.error .error-message {
+    display: block;
+  }
+  
+  .success-message {
+    text-align: center;
+    color: var(--success-color);
+    margin-top: 1rem;
+    font-weight: 500;
+    display: none;
+  }

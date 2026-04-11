@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .projects-header-row {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:24px; animation: fadeUp 0.3s ease both;
+  }
+  .projects-header-row h2 { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; }
+  .view-toggle { display:flex; background:var(--surface); border:1px solid var(--border-sm); border-radius:10px; overflow:hidden; }
+  .view-btn { padding:7px 14px; font-size:14px; cursor:pointer; color:var(--text3); border:none; background:none; transition:all 0.15s; }
+  .view-btn.active { background:var(--accent-dim); color:var(--accent); }
+
+  .projects-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+    gap:16px;
+  }
+  .project-card {
+    background:var(--surface); border:1px solid var(--border-sm);
+    border-radius:var(--radius); overflow:hidden;
+    cursor:pointer; transition:all 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .project-card:hover { border-color:var(--accent-border); transform:translateY(-3px); box-shadow:0 12px 32px rgba(61,235,188,0.06); }
+  .project-thumbnail {
+    height:100px; position:relative;
+    display:flex; align-items:center; justify-content:center; font-size:40px;
+  }
+  .project-status {
+    position:absolute; top:10px; right:10px;
+    font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px;
+  }
+  .status-live { background:rgba(61,235,188,0.2); color:var(--accent); border:1px solid var(--accent-border); }
+  .status-wip { background:rgba(247,201,72,0.15); color:var(--yellow); }
+  .status-done { background:var(--surface3); color:var(--text3); }
+  .project-body { padding:20px; }
+  .project-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:6px; }
+  .project-desc { font-size:13px; color:var(--text2); line-height:1.5; margin-bottom:12px; }
+  .project-tech { margin-bottom:14px; }
+  .project-footer { display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid var(--border-sm); }
+  .project-team { display:flex; gap:-4px; }
+  .mini-avatar { width:24px; height:24px; border-radius:50%; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; color:#0a0a0f; border:2px solid var(--surface); margin-left:-6px; }
+  .mini-avatar:first-child { margin-left:0; }
+  .project-links { display:flex; gap:6px; }
+  .link-btn { background:var(--surface2); border:1px solid var(--border-sm); border-radius:7px; padding:5px 10px; font-size:11px; color:var(--text3); text-decoration:none; cursor:pointer; transition:all 0.15s; font-family:'DM Sans',sans-serif; }
+  .link-btn:hover { border-color:var(--accent-border); color:var(--accent); }
+
+  .new-project-card {
+    background:var(--surface2); border:2px dashed var(--border);
+    border-radius:var(--radius); min-height:280px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:12px; cursor:pointer; transition:all 0.2s;
+    animation: fadeUp 0.4s 0.3s ease both;
+  }
+  .new-project-card:hover { border-color:var(--accent-border); background:var(--accent-dim); }
+  .new-project-card i { font-size:36px; color:var(--text3); }
+  .new-project-card p { font-size:14px; color:var(--text3); font-weight:600; }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">STU<span>NET</span></div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="index.html"><span class="icon"><i class="fa-solid fa-bolt"></i></span> Dashboard</a>
+    <a class="nav-item" href="teammates.html"><span class="icon"><i class="fa-solid fa-users"></i></span> Find Teammates <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="competitions.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span> Competitions</a>
+    <a class="nav-item" href="community.html"><span class="icon"><i class="fa-solid fa-comments"></i></span> Community <span class="nav-badge">3</span></a>
+    <div class="nav-label" style="margin-top:16px;">My Space</div>
+    <a class="nav-item" href="profile.html"><span class="icon"><i class="fa-solid fa-user"></i></span> My Profile</a>
+    <a class="nav-item" href="team.html"><span class="icon"><i class="fa-solid fa-people-group"></i></span> My Team</a>
+    <a class="nav-item active" href="projects.html"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Projects</a>
+    <a class="nav-item" href="achievements.html"><span class="icon"><i class="fa-solid fa-chart-simple"></i></span> Achievements</a>
+    <div class="nav-label" style="margin-top:16px;">More</div>
+    <a class="nav-item" href="resources.html"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> Resources</a>
+    <a class="nav-item" href="settings.html"><span class="icon"><i class="fa-solid fa-gear"></i></span> Settings</a>
+  </nav>
+  <div class="sidebar-user"><div class="avatar">AP</div><div class="sidebar-user-info"><div class="name">Arjun Patel</div><div class="role">Full Stack · Delhi</div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <h1>Projects</h1>
+    <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><span>Search projects…</span></div>
+    <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar" style="width:38px;height:38px;font-size:13px;cursor:pointer;">AP</div>
+  </header>
+
+  <div class="content">
+    <div class="projects-header-row">
+      <div>
+        <h2>My Projects <span style="color:var(--text3);font-size:15px;font-weight:400;">· 5 projects</span></h2>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="view-toggle">
+          <button class="view-btn active"><i class="fa-solid fa-grid-2"></i></button>
+          <button class="view-btn"><i class="fa-solid fa-list"></i></button>
+        </div>
+        <button class="btn-primary"><i class="fa-solid fa-plus"></i> New Project</button>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card" style="animation-delay:0.05s">
+        <div class="project-thumbnail" style="background:linear-gradient(135deg,rgba(61,235,188,0.15),rgba(15,168,130,0.08))">
+          🚀
+          <div class="project-status status-live"><i class="fa-solid fa-circle" style="font-size:7px;"></i> Live</div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">EduTrack AI</div>
+          <div class="project-desc">Adaptive learning platform using ML to personalize study paths. 500+ active users, 4.6★ rating.</div>
+          <div class="project-tech"><div class="tags"><span class="tag">React</span><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">AWS</span></div></div>
+          <div class="project-footer">
+            <div class="project-team">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div>
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#f06bae,#f7c948);">PS</div>
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#4fd1c5,#3debbc);">RK</div>
+            </div>
+            <div class="project-links">
+              <a class="link-btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+              <a class="link-btn" href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.1s">
+        <div class="project-thumbnail" style="background:linear-gradient(135deg,rgba(247,201,72,0.12),rgba(240,107,174,0.08))">
+          💸
+          <div class="project-status status-wip">In Progress</div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">PayFlow Dashboard</div>
+          <div class="project-desc">Real-time payment analytics dashboard built during Razorpay internship. Advanced data visualization.</div>
+          <div class="project-tech"><div class="tags"><span class="tag">React</span><span class="tag">D3.js</span><span class="tag">Redis</span><span class="tag">Node.js</span></div></div>
+          <div class="project-footer">
+            <div class="project-team">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div>
+            </div>
+            <div class="project-links">
+              <a class="link-btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.15s">
+        <div class="project-thumbnail" style="background:linear-gradient(135deg,rgba(79,209,197,0.12),rgba(61,235,188,0.08))">
+          🌿
+          <div class="project-status status-done">Completed</div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">GreenRoute</div>
+          <div class="project-desc">Carbon footprint tracker for daily commutes. Won 2nd place at Hackathon 2023. 200+ downloads.</div>
+          <div class="project-tech"><div class="tags"><span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Google Maps</span></div></div>
+          <div class="project-footer">
+            <div class="project-team">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div>
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#f7c948,#3debbc);">NK</div>
+            </div>
+            <div class="project-links">
+              <a class="link-btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+              <a class="link-btn" href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card" style="animation-delay:0.2s">
+        <div class="project-thumbnail" style="background:linear-gradient(135deg,rgba(240,107,174,0.12),rgba(247,201,72,0.08))">
+          🔗
+          <div class="project-status status-wip">In Progress</div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">ChainVote</div>
+          <div class="project-desc">Decentralized voting system on Ethereum. Transparent, tamper-proof elections for student organizations.</div>
+          <div class="project-tech"><div class="tags"><span class="tag">Solidity</span><span class="tag">Web3.js</span><span class="tag">React</span></div></div>
+          <div class="project-footer">
+            <div class="project-team">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div>
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#3debbc,#f06bae);">VS</div>
+            </div>
+            <div class="project-links">
+              <a class="link-btn" href="#"><i class="fa-brands fa-github"></i> Code</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="new-project-card" onclick="alert('New project!')">
+        <i class="fa-solid fa-folder-plus"></i>
+        <p>Start a New Project</p>
+        <button class="btn-primary" style="padding:8px 20px;font-size:13px;">+ Create</button>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
