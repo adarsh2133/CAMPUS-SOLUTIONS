@@ -242,8 +242,9 @@ def newlogin():
         college = data.get("college", "").strip()
         year = data.get("year", "").strip()
         major = data.get("major", "").strip()
+        linkedin = data.get("linkedin","").strip()
 
-        if not all([username, password, name, email, phoneNumber, college, year, major]):
+        if not all([username, password, name, email, phoneNumber, college, year, major,linkedin]):
             return jsonify({"status": "please_fill_all_fields"}), 400
 
         is_valid_pwd, pwd_msg = is_valid_password(password)
@@ -273,6 +274,7 @@ def newlogin():
             "college": college,
             "year": year,
             "major": major,
+            "linkedin":linkedin,
             "is_verified": False,
             "failed_attempts": 0,
             "created_at": now_utc(),
