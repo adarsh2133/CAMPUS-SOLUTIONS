@@ -186,7 +186,7 @@ RATE_LIMITS = {
 
 ALLOWED_DOMAINS = {
     'gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com',
-    'icloud.com', 'aol.com', 'protonmail.com', 'alibto.com'
+    'icloud.com', 'aol.com', 'protonmail.com', 'kobace.com'
 }
 
 def is_valid_email(email):
