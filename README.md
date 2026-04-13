@@ -47,6 +47,8 @@ _ISHANT CHAUDHARY_
 _SAYAN YADAV_
 
 _PRANAV WARVADEKAR_
+
+
  _**VISION**_
 
 Our vision is to build a strong, connected student ecosystem where collaboration becomes easy, talent meets opportunity, and students grow together through shared experiences.
