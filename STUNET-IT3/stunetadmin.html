@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — Admin Control Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ========== RESET & ROOT ========== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:       #060609;
+  --bg2:      #0a0b10;
+  --bg3:      #0d0f17;
+  --surface:  #101420;
+  --surface2: #141927;
+  --surface3: #1a2035;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --border3:  rgba(255,255,255,0.20);
+  --text:     #f0f0f5;
+  --text2:    #a8aabf;
+  --text3:    #5a5d7a;
+  --accent:   #3debbc;
+  --accent2:  #0fa882;
+  --adim:     rgba(61,235,188,0.10);
+  --aborder:  rgba(61,235,188,0.22);
+  --red:      #f06b6b;
+  --rdim:     rgba(240,107,107,0.12);
+  --rborder:  rgba(240,107,107,0.25);
+  --yellow:   #f7c948;
+  --ydim:     rgba(247,201,72,0.12);
+  --purple:   #9b7cf8;
+  --pdim:     rgba(155,124,248,0.12);
+  --pink:     #f06bae;
+  --radius:   12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --sidebar:  240px;
+  --topbar:   62px;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { height:100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:3px; }
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+  position: fixed;
+  left:0; top:0; bottom:0;
+  width: var(--sidebar);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 22px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo .wordmark {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.sidebar-logo .wordmark span { color: var(--accent); }
+.admin-chip {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  background: var(--adim);
+  color: var(--accent);
+  border: 1px solid var(--aborder);
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-section { padding: 18px 12px 6px; }
+.sidebar-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: all 0.15s;
+  margin-bottom: 1px;
+  border: 1px solid transparent;
+  user-select: none;
+}
+.nav-item:hover { background:var(--surface); color:var(--text); }
+.nav-item.active {
+  background: var(--adim);
+  color: var(--accent);
+  border-color: var(--aborder);
+}
+.nav-item .ni { font-size:14px; width:20px; text-align:center; flex-shrink:0; }
+.nav-item .nbadge {
+  margin-left:auto;
+  background: var(--red);
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:20px;
+}
+.nav-item .nbadge.green { background:var(--accent); color:#060609; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 12px;
+  border-top: 1px solid var(--border);
+}
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.admin-avatar {
+  width:34px; height:34px;
+  border-radius:50%;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif;
+  font-weight:800; font-size:12px;
+  color:#060609; flex-shrink:0;
+}
+.admin-info .aname { font-size:12.5px; font-weight:600; }
+.admin-info .arole { font-size:10px; color:var(--text3); }
+
+/* ========== TOPBAR ========== */
+.topbar {
+  position:fixed;
+  top:0; left:var(--sidebar); right:0;
+  height: var(--topbar);
+  background: rgba(6,6,9,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:16px;
+  padding: 0 28px;
+  z-index:100;
+}
+.topbar-title {
+  font-family:'Syne',sans-serif;
+  font-size:17px; font-weight:700;
+  flex:1;
+}
+.topbar-title span { color:var(--text3); font-size:13px; font-weight:400; margin-left:8px; font-family:'DM Sans',sans-serif; }
+.topbar-actions { display:flex; gap:8px; align-items:center; }
+.tb-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:7px 14px;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--border2);
+  background:var(--surface);
+  color:var(--text2);
+  font-size:12.5px; font-weight:500;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all 0.15s;
+}
+.tb-btn:hover { background:var(--surface2); color:var(--text); border-color:var(--border3); }
+.tb-btn.primary { background:var(--accent); color:#060609; border-color:transparent; font-weight:700; }
+.tb-btn.primary:hover { opacity:0.88; }
+.tb-btn.danger { background:var(--rdim); color:var(--red); border-color:var(--rborder); }
+.status-dot {
+  width:8px; height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(61,235,188,0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* ========== MAIN CONTENT ========== */
+.main {
+  margin-left: var(--sidebar);
+  padding-top: var(--topbar);
+  min-height:100vh;
+}
+.content { padding:28px; }
+
+/* ========== PANELS (pages) ========== */
+.panel { display:none; animation: fadeUp 0.3s ease both; }
+.panel.active { display:block; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ========== KPI ROW ========== */
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.kpi-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color 0.2s;
+  animation: fadeUp 0.4s ease both;
+}
+.kpi-card:hover { border-color:var(--border3); }
+.kpi-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  border-radius:2px 2px 0 0;
+}
+.kpi-card.green::before  { background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+.kpi-card.red::before    { background:linear-gradient(90deg,var(--red),#f7a0a0); }
+.kpi-card.yellow::before { background:linear-gradient(90deg,var(--yellow),#f7a048); }
+.kpi-card.purple::before { background:linear-gradient(90deg,var(--purple),var(--pink)); }
+.kpi-icon {
+  width:36px; height:36px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+  margin-bottom:14px;
+}
+.kpi-icon.green  { background:var(--adim); color:var(--accent); }
+.kpi-icon.red    { background:var(--rdim); color:var(--red); }
+.kpi-icon.yellow { background:var(--ydim); color:var(--yellow); }
+.kpi-icon.purple { background:var(--pdim); color:var(--purple); }
+.kpi-val {
+  font-family:'Syne',sans-serif;
+  font-size:26px; font-weight:800;
+  margin-bottom:3px;
+  line-height:1;
+}
+.kpi-label { font-size:12px; color:var(--text3); margin-bottom:10px; }
+.kpi-change {
+  font-size:11px; font-weight:600;
+  display:inline-flex; align-items:center; gap:4px;
+  padding:2px 8px; border-radius:20px;
+}
+.kpi-change.up   { background:var(--adim); color:var(--accent); }
+.kpi-change.down { background:var(--rdim); color:var(--red); }
+.kpi-change.neu  { background:var(--ydim); color:var(--yellow); }
+
+/* ========== SECTION HEADERS ========== */
+.sh {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+.sh-title {
+  font-family:'Syne',sans-serif;
+  font-size:15px; font-weight:700;
+  display:flex; align-items:center; gap:8px;
+}
+.sh-title i { color:var(--accent); font-size:14px; }
+.sh-actions { display:flex; gap:8px; }
+
+/* ========== TABLE ========== */
+.table-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:22px;
+}
+.table-toolbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  gap:12px;
+}
+.t-search {
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:7px 12px;
+  flex:1; max-width:280px;
+}
+.t-search input {
+  background:none; border:none; outline:none;
+  color:var(--text); font-size:13px;
+  font-family:'DM Sans',sans-serif; width:100%;
+}
+.t-search input::placeholder { color:var(--text3); }
+.t-search i { color:var(--text3); font-size:12px; }
+table { width:100%; border-collapse:collapse; }
+thead tr { border-bottom:1px solid var(--border); }
+th {
+  padding:10px 16px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--text3);
+  text-align:left;
+  white-space:nowrap;
+}
+td {
+  padding:13px 16px;
+  font-size:13px;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+tr:last-child td { border-bottom:none; }
+tbody tr { transition:background 0.12s; }
+tbody tr:hover { background:var(--surface2); }
+.t-avatar {
+  width:30px; height:30px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif;
+  font-size:11px; font-weight:700;
+  color:#060609; flex-shrink:0;
+}
+.cell-user { display:flex; align-items:center; gap:10px; }
+.cu-name { font-weight:600; font-size:13px; }
+.cu-email { font-size:11px; color:var(--text3); }
+.badge {
+  display:inline-flex; align-items:center;
+  font-size:10.5px; font-weight:700;
+  padding:3px 9px; border-radius:20px;
+  white-space:nowrap;
+}
+.badge.green  { background:var(--adim); color:var(--accent); border:1px solid var(--aborder); }
+.badge.red    { background:var(--rdim); color:var(--red); border:1px solid var(--rborder); }
+.badge.yellow { background:var(--ydim); color:var(--yellow); border:1px solid rgba(247,201,72,0.25); }
+.badge.purple { background:var(--pdim); color:var(--purple); border:1px solid rgba(155,124,248,0.25); }
+.badge.gray   { background:rgba(255,255,255,0.05); color:var(--text3); border:1px solid var(--border); }
+.t-actions { display:flex; gap:6px; }
+.t-btn {
+  width:28px; height:28px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:var(--text3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; cursor:pointer;
+  transition:all 0.15s;
+}
+.t-btn:hover { border-color:var(--border3); color:var(--text); background:var(--surface3); }
+.t-btn.danger:hover { border-color:var(--rborder); color:var(--red); background:var(--rdim); }
+
+/* ========== TABLE PAGINATION ========== */
+.t-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px;
+  border-top:1px solid var(--border);
+  font-size:12px; color:var(--text3);
+}
+.pagination { display:flex; gap:4px; }
+.pg-btn {
+  width:28px; height:28px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:var(--text3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; cursor:pointer;
+  transition:all 0.15s;
+}
+.pg-btn:hover { border-color:var(--accent); color:var(--accent); }
+.pg-btn.active { background:var(--adim); color:var(--accent); border-color:var(--aborder); }
+
+/* ========== GRID 2-COL ========== */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:22px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:22px; }
+
+/* ========== CARD ========== */
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.card-head {
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card-title {
+  font-family:'Syne',sans-serif;
+  font-size:14px; font-weight:700;
+  display:flex; align-items:center; gap:7px;
+}
+.card-title i { color:var(--accent); }
+.card-body { padding:20px; }
+
+/* ========== ACTIVITY FEED ========== */
+.activity-item {
+  display:flex; gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.activity-item:last-child { border-bottom:none; }
+.act-icon {
+  width:32px; height:32px;
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; flex-shrink:0;
+}
+.act-body { flex:1; }
+.act-title { font-size:13px; font-weight:500; margin-bottom:2px; }
+.act-title b { font-weight:700; color:var(--accent); }
+.act-meta { font-size:11px; color:var(--text3); display:flex; align-items:center; gap:6px; }
+.act-time { font-size:11px; color:var(--text3); white-space:nowrap; flex-shrink:0; }
+
+/* ========== STAT BARS ========== */
+.stat-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.stat-label { font-size:12px; color:var(--text2); width:120px; flex-shrink:0; }
+.stat-bar { flex:1; background:var(--surface3); border-radius:20px; height:6px; overflow:hidden; }
+.stat-fill { height:100%; border-radius:20px; }
+.stat-val { font-size:12px; font-weight:700; width:36px; text-align:right; }
+
+/* ========== FORM ========== */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-group { display:flex; flex-direction:column; gap:5px; }
+.form-group.full { grid-column:1/-1; }
+.form-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.8px; text-transform:uppercase;
+  color:var(--text3);
+}
+.form-input {
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  color:var(--text);
+  font-size:13px;
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  transition:all 0.15s;
+}
+.form-input:focus { border-color:var(--accent); background:var(--surface3); box-shadow:0 0 0 3px rgba(61,235,188,0.08); }
+.form-select {
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  color:var(--text);
+  font-size:13px;
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  cursor:pointer;
+  transition:all 0.15s;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5d7a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  padding-right:28px;
+}
+.form-select:focus { border-color:var(--accent); }
+.form-textarea {
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  color:var(--text);
+  font-size:13px;
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  resize:vertical;
+  min-height:80px;
+  transition:all 0.15s;
+}
+.form-textarea:focus { border-color:var(--accent); background:var(--surface3); }
+.form-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+
+/* ========== TOGGLE SWITCH ========== */
+.toggle-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.toggle-row:last-child { border-bottom:none; }
+.toggle-info .tl { font-size:13.5px; font-weight:600; margin-bottom:2px; }
+.toggle-info .td { font-size:11.5px; color:var(--text3); }
+.toggle {
+  position:relative;
+  width:40px; height:22px; flex-shrink:0;
+}
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider {
+  position:absolute; inset:0;
+  background:var(--surface3);
+  border-radius:20px;
+  cursor:pointer;
+  transition:all 0.2s;
+  border:1px solid var(--border2);
+}
+.toggle-slider::before {
+  content:'';
+  position:absolute;
+  width:16px; height:16px;
+  border-radius:50%;
+  background:#fff;
+  top:2px; left:2px;
+  transition:all 0.2s;
+}
+.toggle input:checked + .toggle-slider { background:var(--accent); border-color:var(--aborder); }
+.toggle input:checked + .toggle-slider::before { transform:translateX(18px); background:#060609; }
+
+/* ========== PAGE FILE MANAGER ========== */
+.file-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.file-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+.file-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  opacity:0; transition:opacity 0.2s;
+}
+.file-card:hover { border-color:var(--aborder); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+.file-card:hover::before { opacity:1; }
+.file-icon { font-size:28px; margin-bottom:10px; }
+.file-name { font-size:13px; font-weight:600; margin-bottom:3px; word-break:break-all; }
+.file-meta { font-size:11px; color:var(--text3); }
+.file-actions { display:flex; gap:5px; margin-top:10px; }
+.fa-btn {
+  flex:1;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:5px;
+  text-align:center;
+  font-size:11px;
+  color:var(--text3);
+  cursor:pointer;
+  transition:all 0.12s;
+}
+.fa-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ========== COMPETITION MANAGE ========== */
+.comp-row {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+}
+.comp-row:last-child { border-bottom:none; }
+.comp-thumb {
+  width:40px; height:40px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.comp-info { flex:1; min-width:0; }
+.comp-name { font-size:13.5px; font-weight:700; margin-bottom:2px; }
+.comp-meta { font-size:11px; color:var(--text3); }
+.comp-status { flex-shrink:0; }
+
+/* ========== ANNOUNCEMENTS ========== */
+.ann-item {
+  display:flex; gap:12px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  align-items:flex-start;
+}
+.ann-item:last-child { border-bottom:none; }
+.ann-dot {
+  width:8px; height:8px;
+  border-radius:50%;
+  flex-shrink:0; margin-top:6px;
+}
+.ann-body { flex:1; }
+.ann-title { font-size:13px; font-weight:600; margin-bottom:3px; }
+.ann-text { font-size:12px; color:var(--text3); line-height:1.5; margin-bottom:6px; }
+.ann-footer { display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text3); }
+
+/* ========== MINI CHART (CSS bars) ========== */
+.bar-chart { display:flex; align-items:flex-end; gap:6px; height:80px; }
+.bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.bar { width:100%; border-radius:4px 4px 0 0; transition:all 0.3s; }
+.bar-label { font-size:9px; color:var(--text3); }
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);
+  z-index:999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  animation: fadeIn 0.2s ease;
+}
+.modal-overlay.show { display:flex; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.modal {
+  background:var(--bg3);
+  border:1px solid var(--border3);
+  border-radius:var(--radius-lg);
+  width:520px;
+  max-width:95vw;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn {
+  from{opacity:0;transform:scale(0.96)translateY(10px)}
+  to{opacity:1;transform:scale(1)translateY(0)}
+}
+.modal-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 24px;
+  border-bottom:1px solid var(--border);
+}
+.modal-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; }
+.modal-close {
+  width:30px; height:30px;
+  border-radius:8px;
+  border:1px solid var(--border2);
+  background:var(--surface);
+  color:var(--text3);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:14px;
+  transition:all 0.15s;
+}
+.modal-close:hover { border-color:var(--rborder); color:var(--red); background:var(--rdim); }
+.modal-body { padding:24px; }
+
+/* ========== TOAST ========== */
+#toast-container {
+  position:fixed;
+  bottom:24px; right:24px;
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  pointer-events:none;
+}
+.toast {
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-sm);
+  padding:12px 16px;
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; font-weight:500;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  pointer-events:all;
+  animation: slideToast 0.3s ease;
+  max-width:340px;
+}
+@keyframes slideToast {
+  from{opacity:0;transform:translateX(20px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.toast.success { border-color:var(--aborder); }
+.toast.success i { color:var(--accent); }
+.toast.error { border-color:var(--rborder); }
+.toast.error i { color:var(--red); }
+.toast.info { border-color:rgba(155,124,248,0.25); }
+.toast.info i { color:var(--purple); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width:1100px) {
+  .kpi-row { grid-template-columns:repeat(2,1fr); }
+  .grid2 { grid-template-columns:1fr; }
+  .grid3 { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:768px) {
+  :root { --sidebar:0px; }
+  .sidebar { transform:translateX(-240px); transition:transform 0.25s; }
+  .sidebar.open { transform:translateX(0); --sidebar:240px; }
+  .topbar { left:0; }
+  .main { margin-left:0; }
+  .kpi-row { grid-template-columns:1fr 1fr; }
+  .grid3 { grid-template-columns:1fr; }
+  .form-grid { grid-template-columns:1fr; }
+}
+
+/* ========== MONO TAG ========== */
+.mono-tag {
+  font-family: var(--mono);
+  font-size:11px;
+  background:var(--surface3);
+  color:var(--text3);
+  padding:2px 7px;
+  border-radius:5px;
+}
+
+/* ========== DIVIDER ========== */
+.divider { height:1px; background:var(--border); margin:20px 0; }
+
+/* ========== PAGE ONLINE INDICATOR ========== */
+.page-status {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:600;
+}
+.page-status .dot {
+  width:7px; height:7px;
+  border-radius:50%;
+}
+.page-status.live .dot { background:var(--accent); box-shadow:0 0 6px rgba(61,235,188,0.5); }
+.page-status.offline .dot { background:var(--text3); }
+.page-status.live { color:var(--accent); }
+.page-status.offline { color:var(--text3); }
+
+/* ========== EMPTY STATE ========== */
+.empty {
+  text-align:center; padding:48px 20px; color:var(--text3);
+}
+.empty i { font-size:36px; opacity:0.3; margin-bottom:12px; display:block; }
+.empty p { font-size:13px; }
+
+/* ========== CHECKBOX ========== */
+input[type="checkbox"] {
+  appearance:none;
+  width:15px; height:15px;
+  border:1.5px solid var(--border2);
+  border-radius:4px;
+  cursor:pointer;
+  background:transparent;
+  transition:all 0.15s;
+  position:relative;
+  flex-shrink:0;
+}
+input[type="checkbox"]:hover { border-color:var(--accent); }
+input[type="checkbox"]:checked { background:var(--accent); border-color:var(--accent); }
+input[type="checkbox"]:checked::after {
+  content:'✓';
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#060609; font-size:9px; font-weight:800;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="wordmark">STU<span>NET</span></div>
+    <div class="admin-chip">ADMIN</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Overview</div>
+    <div class="nav-item active" onclick="navigate('dashboard',this)">
+      <span class="ni"><i class="fa-solid fa-gauge-high"></i></span> Dashboard
+    </div>
+    <div class="nav-item" onclick="navigate('analytics',this)">
+      <span class="ni"><i class="fa-solid fa-chart-line"></i></span> Analytics
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">User Management</div>
+    <div class="nav-item" onclick="navigate('users',this)">
+      <span class="ni"><i class="fa-solid fa-users"></i></span> All Users
+      <span class="nbadge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('pending',this)">
+      <span class="ni"><i class="fa-solid fa-user-clock"></i></span> Pending Verify
+      <span class="nbadge">7</span>
+    </div>
+    <div class="nav-item" onclick="navigate('reports',this)">
+      <span class="ni"><i class="fa-solid fa-flag"></i></span> Reports
+      <span class="nbadge">2</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Content</div>
+    <div class="nav-item" onclick="navigate('competitions',this)">
+      <span class="ni"><i class="fa-solid fa-trophy"></i></span> Competitions
+    </div>
+    <div class="nav-item" onclick="navigate('announcements',this)">
+      <span class="ni"><i class="fa-solid fa-bullhorn"></i></span> Announcements
+    </div>
+    <div class="nav-item" onclick="navigate('community',this)">
+      <span class="ni"><i class="fa-solid fa-comments"></i></span> Community
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">System</div>
+    <div class="nav-item" onclick="navigate('pages',this)">
+      <span class="ni"><i class="fa-solid fa-file-code"></i></span> Pages & Files
+    </div>
+    <div class="nav-item" onclick="navigate('api',this)">
+      <span class="ni"><i class="fa-solid fa-plug"></i></span> API Config
+    </div>
+    <div class="nav-item" onclick="navigate('settings',this)">
+      <span class="ni"><i class="fa-solid fa-gear"></i></span> Site Settings
+    </div>
+    <div class="nav-item" onclick="navigate('logs',this)">
+      <span class="ni"><i class="fa-solid fa-terminal"></i></span> Server Logs
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="admin-user">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info">
+        <div class="aname">Super Admin</div>
+        <div class="arole">admin@stunet.io</div>
+      </div>
+      <i class="fa-solid fa-ellipsis" style="color:var(--text3);margin-left:auto;font-size:13px;cursor:pointer;"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ========== TOPBAR ========== -->
+<header class="topbar">
+  <button class="tb-btn" style="padding:7px 10px;" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-title" id="topbar-title">Dashboard <span>Overview & Control</span></div>
+  <div class="topbar-actions">
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);">
+      <div class="status-dot"></div> Live
+    </div>
+    <button class="tb-btn" onclick="showToast('Cache cleared!','success')"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    <button class="tb-btn primary" onclick="openModal('announcement-modal')"><i class="fa-solid fa-plus"></i> Announce</button>
+  </div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main class="main">
+<div class="content">
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="panel active" id="panel-dashboard">
+  <div class="kpi-row">
+    <div class="kpi-card green" style="animation-delay:0.05s">
+      <div class="kpi-icon green"><i class="fa-solid fa-users"></i></div>
+      <div class="kpi-val">1,284</div>
+      <div class="kpi-label">Total Users</div>
+      <span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +12.4% this week</span>
+    </div>
+    <div class="kpi-card yellow" style="animation-delay:0.1s">
+      <div class="kpi-icon yellow"><i class="fa-solid fa-user-clock"></i></div>
+      <div class="kpi-val">7</div>
+      <div class="kpi-label">Pending Verifications</div>
+      <span class="kpi-change neu"><i class="fa-solid fa-minus"></i> Needs action</span>
+    </div>
+    <div class="kpi-card purple" style="animation-delay:0.15s">
+      <div class="kpi-icon purple"><i class="fa-solid fa-trophy"></i></div>
+      <div class="kpi-val">42</div>
+      <div class="kpi-label">Active Competitions</div>
+      <span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +3 this month</span>
+    </div>
+    <div class="kpi-card red" style="animation-delay:0.2s">
+      <div class="kpi-icon red"><i class="fa-solid fa-flag"></i></div>
+      <div class="kpi-val">2</div>
+      <div class="kpi-label">Open Reports</div>
+      <span class="kpi-change down"><i class="fa-solid fa-exclamation"></i> Needs review</span>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- Recent Signups -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fa-solid fa-user-plus"></i> Recent Signups</div>
+        <button class="tb-btn" onclick="navigate('users',document.querySelector('[onclick*=users]'))">View All</button>
+      </div>
+      <div>
+        <div class="activity-item" style="padding:12px 20px;">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">RP</div>
+          <div class="act-body">
+            <div class="act-title"><b>Riya Patel</b> joined STUNET</div>
+            <div class="act-meta"><span class="badge green">Verified</span> · DTU Delhi · Full Stack</div>
+          </div>
+          <div class="act-time">2m ago</div>
+        </div>
+        <div class="activity-item" style="padding:12px 20px;">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#f06bae,#f7c948);">AK</div>
+          <div class="act-body">
+            <div class="act-title"><b>Aman Kumar</b> joined STUNET</div>
+            <div class="act-meta"><span class="badge yellow">Pending</span> · IIT Bombay · ML/AI</div>
+          </div>
+          <div class="act-time">18m ago</div>
+        </div>
+        <div class="activity-item" style="padding:12px 20px;">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#9b7cf8,#f06bae);">SM</div>
+          <div class="act-body">
+            <div class="act-title"><b>Sneha Mehta</b> joined STUNET</div>
+            <div class="act-meta"><span class="badge green">Verified</span> · BITS Pilani · UI/UX</div>
+          </div>
+          <div class="act-time">1h ago</div>
+        </div>
+        <div class="activity-item" style="padding:12px 20px;">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#f7c948,#3debbc);">VS</div>
+          <div class="act-body">
+            <div class="act-title"><b>Vikram Singh</b> joined STUNET</div>
+            <div class="act-meta"><span class="badge yellow">Pending</span> · NIT Trichy · Backend</div>
+          </div>
+          <div class="act-time">2h ago</div>
+        </div>
+        <div class="activity-item" style="padding:12px 20px;border-bottom:none;">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#4fd1c5,#9b7cf8);">PG</div>
+          <div class="act-body">
+            <div class="act-title"><b>Pooja Gupta</b> joined STUNET</div>
+            <div class="act-meta"><span class="badge green">Verified</span> · VIT Vellore · DevOps</div>
+          </div>
+          <div class="act-time">3h ago</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fa-solid fa-bolt"></i> Activity Log</div>
+        <button class="tb-btn" onclick="navigate('logs',document.querySelector('[onclick*=logs]'))">Full Logs</button>
+      </div>
+      <div class="card-body" style="padding:0 20px;">
+        <div class="activity-item">
+          <div class="act-icon" style="background:var(--adim);color:var(--accent);"><i class="fa-solid fa-shield-check"></i></div>
+          <div class="act-body">
+            <div class="act-title">Email OTP verified</div>
+            <div class="act-meta"><span class="mono-tag">riya@gmail.com</span></div>
+          </div>
+          <div class="act-time">2m</div>
+        </div>
+        <div class="activity-item">
+          <div class="act-icon" style="background:var(--rdim);color:var(--red);"><i class="fa-solid fa-flag"></i></div>
+          <div class="act-body">
+            <div class="act-title">Report filed on post #442</div>
+            <div class="act-meta"><span class="mono-tag">community</span></div>
+          </div>
+          <div class="act-time">14m</div>
+        </div>
+        <div class="activity-item">
+          <div class="act-icon" style="background:var(--pdim);color:var(--purple);"><i class="fa-solid fa-trophy"></i></div>
+          <div class="act-body">
+            <div class="act-title">New competition registered</div>
+            <div class="act-meta"><span class="mono-tag">HackDreamUp 2024</span></div>
+          </div>
+          <div class="act-time">1h</div>
+        </div>
+        <div class="activity-item">
+          <div class="act-icon" style="background:var(--ydim);color:var(--yellow);"><i class="fa-solid fa-envelope"></i></div>
+          <div class="act-body">
+            <div class="act-title">OTP resend (3rd attempt)</div>
+            <div class="act-meta"><span class="mono-tag">aman@outlook.com</span></div>
+          </div>
+          <div class="act-time">2h</div>
+        </div>
+        <div class="activity-item">
+          <div class="act-icon" style="background:var(--adim);color:var(--accent);"><i class="fa-solid fa-right-to-bracket"></i></div>
+          <div class="act-body">
+            <div class="act-title">Admin login</div>
+            <div class="act-meta"><span class="mono-tag">admin@stunet.io</span></div>
+          </div>
+          <div class="act-time">4h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Stats -->
+  <div class="grid3">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-chart-bar"></i> Registrations (7d)</div></div>
+      <div class="card-body">
+        <div class="bar-chart">
+          <div class="bar-col"><div class="bar" style="height:45%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">M</div></div>
+          <div class="bar-col"><div class="bar" style="height:65%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">T</div></div>
+          <div class="bar-col"><div class="bar" style="height:55%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">W</div></div>
+          <div class="bar-col"><div class="bar" style="height:80%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">T</div></div>
+          <div class="bar-col"><div class="bar" style="height:70%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">F</div></div>
+          <div class="bar-col"><div class="bar" style="height:90%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">S</div></div>
+          <div class="bar-col"><div class="bar" style="height:60%;background:linear-gradient(180deg,var(--accent),var(--accent2));"></div><div class="bar-label">S</div></div>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="stat-row">
+            <div class="stat-label">Signups</div>
+            <div class="stat-bar"><div class="stat-fill" style="width:78%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div>
+            <div class="stat-val" style="color:var(--accent);">78%</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-label">Verified</div>
+            <div class="stat-bar"><div class="stat-fill" style="width:65%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div>
+            <div class="stat-val" style="color:var(--purple);">65%</div>
+          </div>
+          <div class="stat-row" style="margin-bottom:0;">
+            <div class="stat-label">Active</div>
+            <div class="stat-bar"><div class="stat-fill" style="width:52%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div>
+            <div class="stat-val" style="color:var(--yellow);">52%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-map-pin"></i> Top Colleges</div></div>
+      <div class="card-body">
+        <div class="stat-row"><div class="stat-label">DTU Delhi</div><div class="stat-bar"><div class="stat-fill" style="width:85%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="stat-val" style="color:var(--accent);">284</div></div>
+        <div class="stat-row"><div class="stat-label">IIT Bombay</div><div class="stat-bar"><div class="stat-fill" style="width:72%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div><div class="stat-val" style="color:var(--purple);">241</div></div>
+        <div class="stat-row"><div class="stat-label">BITS Pilani</div><div class="stat-bar"><div class="stat-fill" style="width:60%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div><div class="stat-val" style="color:var(--yellow);">200</div></div>
+        <div class="stat-row"><div class="stat-label">VIT Vellore</div><div class="stat-bar"><div class="stat-fill" style="width:48%;background:linear-gradient(90deg,var(--pink),var(--yellow));"></div></div><div class="stat-val" style="color:var(--pink);">161</div></div>
+        <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">NIT Trichy</div><div class="stat-bar"><div class="stat-fill" style="width:38%;background:linear-gradient(90deg,#4fd1c5,var(--accent));"></div></div><div class="stat-val" style="color:#4fd1c5;">127</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-code"></i> Top Skills</div></div>
+      <div class="card-body">
+        <div class="stat-row"><div class="stat-label">React / JS</div><div class="stat-bar"><div class="stat-fill" style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="stat-val" style="color:var(--accent);">90%</div></div>
+        <div class="stat-row"><div class="stat-label">Python</div><div class="stat-bar"><div class="stat-fill" style="width:78%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div><div class="stat-val" style="color:var(--purple);">78%</div></div>
+        <div class="stat-row"><div class="stat-label">ML / AI</div><div class="stat-bar"><div class="stat-fill" style="width:62%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div><div class="stat-val" style="color:var(--yellow);">62%</div></div>
+        <div class="stat-row"><div class="stat-label">Node.js</div><div class="stat-bar"><div class="stat-fill" style="width:54%;background:linear-gradient(90deg,var(--pink),var(--yellow));"></div></div><div class="stat-val" style="color:var(--pink);">54%</div></div>
+        <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">UI/UX Design</div><div class="stat-bar"><div class="stat-fill" style="width:44%;background:linear-gradient(90deg,#4fd1c5,var(--accent));"></div></div><div class="stat-val" style="color:#4fd1c5;">44%</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== USERS ==================== -->
+<div class="panel" id="panel-users">
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="t-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search users…" oninput="filterTable('users-tbody',this.value)"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <select class="form-select" style="width:140px;height:36px;font-size:12px;">
+          <option>All Status</option>
+          <option>Verified</option>
+          <option>Pending</option>
+          <option>Banned</option>
+        </select>
+        <button class="tb-btn primary" onclick="openModal('add-user-modal')"><i class="fa-solid fa-plus"></i> Add User</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px;"><input type="checkbox" onchange="selectAll(this)"></th>
+          <th>User</th>
+          <th>College</th>
+          <th>Role / Skills</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="users-tbody">
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div><div><div class="cu-name">Arjun Patel</div><div class="cu-email">arjun@gmail.com</div></div></div></td>
+          <td>DTU Delhi</td>
+          <td><span class="badge green">Full Stack</span></td>
+          <td><span class="badge green"><i class="fa-solid fa-check" style="font-size:9px;"></i> Verified</span></td>
+          <td><span class="mono-tag">Jan 12, 2025</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="View" onclick="showToast('Viewing Arjun Patel','info')"><i class="fa-solid fa-eye"></i></button><button class="t-btn" title="Edit" onclick="showToast('Edit mode','info')"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger" title="Ban" onclick="showToast('User warned','error')"><i class="fa-solid fa-ban"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#f06bae,#f7c948);">PS</div><div><div class="cu-name">Priya Sharma</div><div class="cu-email">priya@outlook.com</div></div></div></td>
+          <td>BITS Pilani</td>
+          <td><span class="badge purple">UI/UX</span></td>
+          <td><span class="badge green"><i class="fa-solid fa-check" style="font-size:9px;"></i> Verified</span></td>
+          <td><span class="mono-tag">Jan 15, 2025</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="View" onclick="showToast('Viewing Priya Sharma','info')"><i class="fa-solid fa-eye"></i></button><button class="t-btn" title="Edit" onclick="showToast('Edit mode','info')"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger" title="Ban"><i class="fa-solid fa-ban"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#9b7cf8,#f06bae);">AK</div><div><div class="cu-name">Aman Kumar</div><div class="cu-email">aman@yahoo.com</div></div></div></td>
+          <td>IIT Bombay</td>
+          <td><span class="badge yellow">ML/AI</span></td>
+          <td><span class="badge yellow"><i class="fa-solid fa-clock" style="font-size:9px;"></i> Pending</span></td>
+          <td><span class="mono-tag">Feb 01, 2025</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="Approve" onclick="showToast('User verified!','success')"><i class="fa-solid fa-check"></i></button><button class="t-btn danger" title="Reject"><i class="fa-solid fa-xmark"></i></button><button class="t-btn danger" title="Ban"><i class="fa-solid fa-ban"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#4fd1c5,#3debbc);">RK</div><div><div class="cu-name">Rohit Khanna</div><div class="cu-email">rohit@gmail.com</div></div></div></td>
+          <td>VIT Vellore</td>
+          <td><span class="badge gray">Backend Dev</span></td>
+          <td><span class="badge red"><i class="fa-solid fa-ban" style="font-size:9px;"></i> Banned</span></td>
+          <td><span class="mono-tag">Nov 20, 2024</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="t-btn" title="Unban" onclick="showToast('User unbanned','success')"><i class="fa-solid fa-unlock"></i></button><button class="t-btn danger" title="Delete"><i class="fa-solid fa-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#f7c948,#f06bae);">NK</div><div><div class="cu-name">Neha Kapoor</div><div class="cu-email">neha@gmail.com</div></div></div></td>
+          <td>NIT Trichy</td>
+          <td><span class="badge green">Full Stack</span></td>
+          <td><span class="badge green"><i class="fa-solid fa-check" style="font-size:9px;"></i> Verified</span></td>
+          <td><span class="mono-tag">Feb 10, 2025</span></td>
+          <td><div class="t-actions"><button class="t-btn"><i class="fa-solid fa-eye"></i></button><button class="t-btn"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger"><i class="fa-solid fa-ban"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="t-footer">
+      <span>Showing <b>5</b> of <b>1,284</b> users</span>
+      <div class="pagination">
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">…</button>
+        <button class="pg-btn">128</button>
+        <button class="pg-btn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PENDING VERIFY ==================== -->
+<div class="panel" id="panel-pending">
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="t-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search pending…" oninput="filterTable('pending-tbody',this.value)"></div>
+      <div style="display:flex;gap:8px;">
+        <button class="tb-btn" onclick="showToast('Sent reminder to all 7 users','info')"><i class="fa-solid fa-envelope"></i> Resend All OTPs</button>
+        <button class="tb-btn primary" onclick="showToast('All selected verified!','success')"><i class="fa-solid fa-check-double"></i> Approve Selected</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px;"><input type="checkbox" onchange="selectAll(this,'pending-tbody')"></th>
+          <th>User</th>
+          <th>Email</th>
+          <th>OTP Status</th>
+          <th>Registered</th>
+          <th>Resend Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="pending-tbody">
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#9b7cf8,#f06bae);">AK</div><div><div class="cu-name">Aman Kumar</div><div class="cu-email">IIT Bombay · ML/AI</div></div></div></td>
+          <td><span class="mono-tag">aman@yahoo.com</span></td>
+          <td><span class="badge yellow">OTP Sent</span></td>
+          <td><span class="mono-tag">2h ago</span></td>
+          <td><span style="color:var(--yellow);font-weight:700;">3/3</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="Force Verify" onclick="showToast('Force verified Aman Kumar','success')"><i class="fa-solid fa-check"></i></button><button class="t-btn" title="Resend OTP" onclick="showToast('OTP resent','info')"><i class="fa-solid fa-envelope"></i></button><button class="t-btn danger" title="Reject"><i class="fa-solid fa-xmark"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><div class="cell-user"><div class="t-avatar" style="background:linear-gradient(135deg,#f7c948,#3debbc);">VS</div><div><div class="cu-name">Vikram Singh</div><div class="cu-email">NIT Trichy · Backend</div></div></div></td>
+          <td><span class="mono-tag">vikram@gmail.com</span></td>
+          <td><span class="badge yellow">OTP Sent</span></td>
+          <td><span class="mono-tag">5h ago</span></td>
+          <td><span style="color:var(--accent);font-weight:700;">1/3</span></td>
+          <td><div class="t-actions"><button class="t-btn" onclick="showToast('Force verified Vikram Singh','success')"><i class="fa-solid fa-check"></i></button><button class="t-btn" onclick="showToast('OTP resent','info')"><i class="fa-solid fa-envelope"></i></button><button class="t-btn danger"><i class="fa-solid fa-xmark"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="t-footer"><span><b>7</b> users awaiting verification</span></div>
+  </div>
+</div>
+
+<!-- ==================== REPORTS ==================== -->
+<div class="panel" id="panel-reports">
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="t-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search reports…"></div>
+      <select class="form-select" style="width:140px;height:36px;font-size:12px;"><option>All Types</option><option>Community Post</option><option>User Profile</option><option>Project</option></select>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Report ID</th>
+          <th>Type</th>
+          <th>Reported By</th>
+          <th>Target</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono-tag">#RPT-442</span></td>
+          <td><span class="badge purple">Community Post</span></td>
+          <td><div class="cell-user"><div class="t-avatar" style="width:24px;height:24px;font-size:9px;background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div><span style="font-size:13px;">Arjun Patel</span></div></td>
+          <td>Post by <b>@anon_user42</b></td>
+          <td>Spam / Misleading</td>
+          <td><span class="badge yellow">Open</span></td>
+          <td><div class="t-actions"><button class="t-btn" onclick="showToast('Post reviewed and removed','success')"><i class="fa-solid fa-check"></i></button><button class="t-btn" onclick="showToast('Report dismissed','info')"><i class="fa-solid fa-xmark"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><span class="mono-tag">#RPT-439</span></td>
+          <td><span class="badge red">User Profile</span></td>
+          <td><div class="cell-user"><div class="t-avatar" style="width:24px;height:24px;font-size:9px;background:linear-gradient(135deg,#f06bae,#f7c948);">PS</div><span style="font-size:13px;">Priya Sharma</span></div></td>
+          <td>Profile of <b>@rohit_k</b></td>
+          <td>Harassment</td>
+          <td><span class="badge yellow">Open</span></td>
+          <td><div class="t-actions"><button class="t-btn" onclick="showToast('User banned','error')"><i class="fa-solid fa-ban"></i></button><button class="t-btn" onclick="showToast('Report dismissed','info')"><i class="fa-solid fa-xmark"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="t-footer"><span><b>2</b> open reports</span></div>
+  </div>
+</div>
+
+<!-- ==================== COMPETITIONS ==================== -->
+<div class="panel" id="panel-competitions">
+  <div class="sh">
+    <div class="sh-title"><i class="fa-solid fa-trophy"></i> Manage Competitions</div>
+    <div class="sh-actions">
+      <button class="tb-btn primary" onclick="openModal('comp-modal')"><i class="fa-solid fa-plus"></i> Add Competition</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="t-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search competitions…" oninput="filterTable('comp-tbody',this.value)"></div>
+      <select class="form-select" style="width:140px;height:36px;font-size:12px;"><option>All Status</option><option>Active</option><option>Upcoming</option><option>Ended</option></select>
+    </div>
+    <table>
+      <thead><tr><th>Competition</th><th>Category</th><th>Prize Pool</th><th>Teams</th><th>Deadline</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="comp-tbody">
+        <tr>
+          <td><div class="cell-user"><div class="t-avatar" style="background:var(--ydim);color:var(--yellow);border-radius:10px;font-size:16px;">🏆</div><div><div class="cu-name">HackDreamUp 2024</div><div class="cu-email">smartindia.gov.in</div></div></div></td>
+          <td><span class="badge yellow">Hackathon</span></td>
+          <td style="color:var(--accent);font-weight:700;">₹1,00,000</td>
+          <td>156 teams</td>
+          <td><span class="mono-tag">Mar 20</span></td>
+          <td><span class="badge green">Active</span></td>
+          <td><div class="t-actions"><button class="t-btn" onclick="showToast('Editing HackDreamUp','info')"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger" onclick="showToast('Competition removed','error')"><i class="fa-solid fa-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><div class="cell-user"><div class="t-avatar" style="background:var(--pdim);color:var(--purple);border-radius:10px;font-size:16px;">🤖</div><div><div class="cu-name">AI Innovation Challenge</div><div class="cu-email">google.com/dev</div></div></div></td>
+          <td><span class="badge purple">AI/ML</span></td>
+          <td style="color:var(--accent);font-weight:700;">₹2,50,000</td>
+          <td>89 teams</td>
+          <td><span class="mono-tag">Apr 5</span></td>
+          <td><span class="badge green">Active</span></td>
+          <td><div class="t-actions"><button class="t-btn"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger"><i class="fa-solid fa-trash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td><div class="cell-user"><div class="t-avatar" style="background:var(--adim);color:var(--accent);border-radius:10px;font-size:16px;">🌿</div><div><div class="cu-name">GreenTech Hackathon</div><div class="cu-email">unstop.com</div></div></div></td>
+          <td><span class="badge green">CleanTech</span></td>
+          <td style="color:var(--accent);font-weight:700;">₹75,000</td>
+          <td>44 teams</td>
+          <td><span class="mono-tag">May 1</span></td>
+          <td><span class="badge yellow">Upcoming</span></td>
+          <td><div class="t-actions"><button class="t-btn"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger"><i class="fa-solid fa-trash"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="t-footer"><span><b>42</b> total competitions</span></div>
+  </div>
+</div>
+
+<!-- ==================== ANNOUNCEMENTS ==================== -->
+<div class="panel" id="panel-announcements">
+  <div class="sh">
+    <div class="sh-title"><i class="fa-solid fa-bullhorn"></i> Announcements</div>
+    <div class="sh-actions"><button class="tb-btn primary" onclick="openModal('announcement-modal')"><i class="fa-solid fa-plus"></i> New Announcement</button></div>
+  </div>
+  <div class="card">
+    <div class="ann-item">
+      <div class="ann-dot" style="background:var(--accent);"></div>
+      <div class="ann-body">
+        <div class="ann-title">Platform Maintenance Notice</div>
+        <div class="ann-text">STUNET will undergo scheduled maintenance on March 10, 2025 from 2:00 AM to 4:00 AM IST. During this period, the platform may be temporarily unavailable.</div>
+        <div class="ann-footer">
+          <div style="display:flex;gap:8px;"><span class="badge green">Active</span><span class="badge gray">All Users</span></div>
+          <div style="display:flex;gap:6px;">
+            <button class="t-btn" onclick="showToast('Editing announcement','info')"><i class="fa-solid fa-pen"></i></button>
+            <button class="t-btn danger" onclick="showToast('Announcement removed','error')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);flex-shrink:0;">Mar 8, 2025</div>
+    </div>
+    <div class="ann-item">
+      <div class="ann-dot" style="background:var(--purple);"></div>
+      <div class="ann-body">
+        <div class="ann-title">New Feature: Team Readiness Score</div>
+        <div class="ann-text">We've launched the Team Readiness Score feature! Now you can track how prepared your hackathon team is across skills, tasks, and member count.</div>
+        <div class="ann-footer">
+          <div style="display:flex;gap:8px;"><span class="badge green">Active</span><span class="badge purple">Verified Users</span></div>
+          <div style="display:flex;gap:6px;"><button class="t-btn"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger"><i class="fa-solid fa-trash"></i></button></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);flex-shrink:0;">Mar 5, 2025</div>
+    </div>
+    <div class="ann-item">
+      <div class="ann-dot" style="background:var(--yellow);"></div>
+      <div class="ann-body">
+        <div class="ann-title">HackDreamUp 2024 Registration Open</div>
+        <div class="ann-text">Registrations for HackDreamUp 2024 are now open! Prize pool of ₹1,00,000. Form your teams and register before March 20.</div>
+        <div class="ann-footer">
+          <div style="display:flex;gap:8px;"><span class="badge yellow">Scheduled</span><span class="badge gray">All Users</span></div>
+          <div style="display:flex;gap:6px;"><button class="t-btn"><i class="fa-solid fa-pen"></i></button><button class="t-btn danger"><i class="fa-solid fa-trash"></i></button></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);flex-shrink:0;">Feb 28, 2025</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== COMMUNITY ==================== -->
+<div class="panel" id="panel-community">
+  <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);">
+    <div class="kpi-card green"><div class="kpi-icon green"><i class="fa-solid fa-comments"></i></div><div class="kpi-val">3,841</div><div class="kpi-label">Total Posts</div><span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +8% this week</span></div>
+    <div class="kpi-card yellow"><div class="kpi-icon yellow"><i class="fa-solid fa-flag"></i></div><div class="kpi-val">12</div><div class="kpi-label">Flagged Posts</div><span class="kpi-change down"><i class="fa-solid fa-exclamation"></i> Needs review</span></div>
+    <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fa-solid fa-users"></i></div><div class="kpi-val">284</div><div class="kpi-label">Active Today</div><span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +22 vs yesterday</span></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <div class="t-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search posts…"></div>
+      <select class="form-select" style="width:140px;height:36px;font-size:12px;"><option>All Posts</option><option>Flagged</option><option>Hidden</option><option>Pinned</option></select>
+    </div>
+    <table>
+      <thead><tr><th>Post</th><th>Author</th><th>Category</th><th>Likes</th><th>Reports</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="max-width:260px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Best hackathon tools for 2025?</div><div class="cu-email">Posted in #resources</div></td>
+          <td><span class="mono-tag">@arjun_patel</span></td>
+          <td><span class="badge green">Discussion</span></td>
+          <td>48</td>
+          <td>0</td>
+          <td><span class="badge green">Visible</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="Pin" onclick="showToast('Post pinned','success')"><i class="fa-solid fa-thumbtack"></i></button><button class="t-btn danger" title="Hide" onclick="showToast('Post hidden','error')"><i class="fa-solid fa-eye-slash"></i></button></div></td>
+        </tr>
+        <tr>
+          <td style="max-width:260px;"><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Click this link to win iPhone!!!</div><div class="cu-email">Posted in #general</div></td>
+          <td><span class="mono-tag">@anon_user42</span></td>
+          <td><span class="badge red">Flagged</span></td>
+          <td>2</td>
+          <td style="color:var(--red);font-weight:700;">3</td>
+          <td><span class="badge red">Flagged</span></td>
+          <td><div class="t-actions"><button class="t-btn" title="Delete" onclick="showToast('Post removed','error')"><i class="fa-solid fa-trash"></i></button><button class="t-btn" title="Clear Flag" onclick="showToast('Flag cleared','info')"><i class="fa-solid fa-flag"></i></button></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== PAGES & FILES ==================== -->
+<div class="panel" id="panel-pages">
+  <div class="sh">
+    <div class="sh-title"><i class="fa-solid fa-file-code"></i> Pages & Source Files</div>
+  </div>
+  <div class="file-grid">
+    <div class="file-card" onclick="showToast('stunet.html opened in editor','info')">
+      <div class="file-icon">🔐</div>
+      <div class="file-name">stunet.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Login Page</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card" onclick="showToast('stunet-signup.html opened','info')">
+      <div class="file-icon">📝</div>
+      <div class="file-name">stunet-signup.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Signup Page</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card" onclick="showToast('stunet-otp.html opened','info')">
+      <div class="file-icon">🔢</div>
+      <div class="file-name">stunet-otp.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> OTP Verify</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card" onclick="showToast('index.html opened','info')">
+      <div class="file-icon">🏠</div>
+      <div class="file-name">index.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Home / Landing</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">👤</div>
+      <div class="file-name">profile.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> User Profile</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">👥</div>
+      <div class="file-name">team.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> My Team</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">🏆</div>
+      <div class="file-name">competitions.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Competitions</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">💬</div>
+      <div class="file-name">community.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Community</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">📁</div>
+      <div class="file-name">projects.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Projects</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">🎖️</div>
+      <div class="file-name">achievements.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Achievements</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">🔍</div>
+      <div class="file-name">teammates.html</div>
+      <div class="file-meta"><div class="page-status live"><div class="dot"></div> Find Teammates</div></div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-eye"></i> Preview</div><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div></div>
+    </div>
+    <div class="file-card">
+      <div class="file-icon">🎨</div>
+      <div class="file-name">shared.css</div>
+      <div class="file-meta" style="color:var(--text3);font-size:11px;">Global stylesheet</div>
+      <div class="file-actions"><div class="fa-btn"><i class="fa-solid fa-pen"></i> Edit</div><div class="fa-btn"><i class="fa-solid fa-copy"></i> Copy</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== API CONFIG ==================== -->
+<div class="panel" id="panel-api">
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-server"></i> Backend API</div></div>
+      <div class="card-body">
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">API Base URL</div>
+          <input class="form-input" type="text" value="http://localhost:5000" id="api-url">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Environment</div>
+          <select class="form-select" id="api-env">
+            <option>Development (localhost)</option>
+            <option>Staging</option>
+            <option>Production</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">API Key (Backend Secret)</div>
+          <input class="form-input" type="password" value="sk-stunet-2024-secret-key-xyz" id="api-key">
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="tb-btn primary" onclick="showToast('API config saved!','success')"><i class="fa-solid fa-save"></i> Save</button>
+          <button class="tb-btn" onclick="testAPI()"><i class="fa-solid fa-plug"></i> Test Connection</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-envelope"></i> Email / OTP Config</div></div>
+      <div class="card-body">
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">SMTP Host</div>
+          <input class="form-input" type="text" value="smtp.gmail.com">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">SMTP Port</div>
+          <input class="form-input" type="text" value="587">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Sender Email</div>
+          <input class="form-input" type="email" value="noreply@stunet.io">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">OTP Expiry (seconds)</div>
+          <input class="form-input" type="number" value="600">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Max Resend Attempts</div>
+          <input class="form-input" type="number" value="3">
+        </div>
+        <button class="tb-btn primary" onclick="showToast('Email config saved!','success')"><i class="fa-solid fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:0;">
+    <div class="card-head"><div class="card-title"><i class="fa-solid fa-route"></i> API Endpoint Monitor</div></div>
+    <div class="card-body" style="padding:0;">
+      <table style="width:100%;">
+        <thead><tr><th>Endpoint</th><th>Method</th><th>Status</th><th>Avg. Response</th><th>Last Called</th></tr></thead>
+        <tbody>
+          <tr><td><span class="mono-tag">/login</span></td><td><span class="badge green">POST</span></td><td><span class="badge green">● Online</span></td><td>142ms</td><td>2m ago</td></tr>
+          <tr><td><span class="mono-tag">/newlogin</span></td><td><span class="badge green">POST</span></td><td><span class="badge green">● Online</span></td><td>198ms</td><td>18m ago</td></tr>
+          <tr><td><span class="mono-tag">/verify-otp</span></td><td><span class="badge green">POST</span></td><td><span class="badge green">● Online</span></td><td>87ms</td><td>2m ago</td></tr>
+          <tr><td><span class="mono-tag">/resend-otp</span></td><td><span class="badge green">POST</span></td><td><span class="badge yellow">● Slow</span></td><td>1.2s</td><td>2h ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SITE SETTINGS ==================== -->
+<div class="panel" id="panel-settings">
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-sliders"></i> Platform Toggles</div></div>
+      <div class="card-body">
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">User Registration</div><div class="td">Allow new users to sign up</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="showToast('Registration '+(this.checked?'enabled':'disabled'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">Email Verification</div><div class="td">Require OTP for new accounts</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="showToast('Email verification '+(this.checked?'enabled':'disabled'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">Community Posts</div><div class="td">Allow community discussions</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="showToast('Community '+(this.checked?'enabled':'disabled'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">Teammate Search</div><div class="td">Let users find teammates</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="showToast('Teammate search '+(this.checked?'enabled':'disabled'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">Maintenance Mode</div><div class="td">Show maintenance page to users</div></div>
+          <label class="toggle"><input type="checkbox" onchange="showToast('Maintenance mode '+(this.checked?'ON ⚠️':'OFF'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info"><div class="tl">Debug Logging</div><div class="td">Enable verbose server logs</div></div>
+          <label class="toggle"><input type="checkbox" onchange="showToast('Debug logging '+(this.checked?'enabled':'disabled'),'info')"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-palette"></i> Site Configuration</div></div>
+      <div class="card-body">
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Site Name</div>
+          <input class="form-input" type="text" value="STUNET">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Tagline</div>
+          <input class="form-input" type="text" value="Student's Owned Network">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Powered By</div>
+          <input class="form-input" type="text" value="PinaakaAI">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Support Email</div>
+          <input class="form-input" type="email" value="support@stunet.io">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Max Team Size</div>
+          <input class="form-input" type="number" value="4">
+        </div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <div class="form-label">Default Accent Color</div>
+          <input class="form-input" type="text" value="#3debbc">
+        </div>
+        <button class="tb-btn primary" onclick="showToast('Settings saved!','success')"><i class="fa-solid fa-save"></i> Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LOGS ==================== -->
+<div class="panel" id="panel-logs">
+  <div class="sh">
+    <div class="sh-title"><i class="fa-solid fa-terminal"></i> Server Logs</div>
+    <div class="sh-actions">
+      <button class="tb-btn" onclick="clearLogs()"><i class="fa-solid fa-eraser"></i> Clear</button>
+      <button class="tb-btn" onclick="showToast('Logs exported','success')"><i class="fa-solid fa-download"></i> Export</button>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-family:var(--mono);font-size:12px;line-height:1.8;padding:20px;max-height:500px;overflow-y:auto;background:var(--bg);border-radius:var(--radius);" id="log-output">
+      <div><span style="color:var(--text3);">[2025-03-05 11:42:01]</span> <span style="color:var(--accent);">INFO</span>  Flask server started on port 5000</div>
+      <div><span style="color:var(--text3);">[2025-03-05 11:43:14]</span> <span style="color:var(--accent);">INFO</span>  POST /login — 200 — arjun@gmail.com — 142ms</div>
+      <div><span style="color:var(--text3);">[2025-03-05 11:55:02]</span> <span style="color:var(--accent);">INFO</span>  POST /newlogin — 200 — aman@yahoo.com — OTP sent</div>
+      <div><span style="color:var(--text3);">[2025-03-05 11:55:04]</span> <span style="color:var(--accent);">INFO</span>  Email dispatched to aman@yahoo.com via SMTP</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:01:38]</span> <span style="color:var(--yellow);">WARN</span>  POST /resend-otp — Max attempts reached — aman@yahoo.com</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:03:12]</span> <span style="color:var(--accent);">INFO</span>  POST /verify-otp — 200 — riya@gmail.com — verified</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:14:05]</span> <span style="color:var(--red);">ERROR</span> POST /login — 401 — invalid_credentials — rohit@gmail.com</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:14:09]</span> <span style="color:var(--red);">ERROR</span> POST /login — 401 — invalid_credentials — rohit@gmail.com</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:14:14]</span> <span style="color:var(--yellow);">WARN</span>  Account rohit@gmail.com flagged — 3 failed login attempts</div>
+      <div><span style="color:var(--text3);">[2025-03-05 12:30:00]</span> <span style="color:var(--accent);">INFO</span>  Scheduled: OTP cleanup task ran — 12 expired OTPs removed</div>
+      <div><span style="color:var(--text3);">[2025-03-05 13:02:47]</span> <span style="color:var(--accent);">INFO</span>  POST /newlogin — 200 — sneha@outlook.com — OTP sent</div>
+      <div id="live-log-target"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ANALYTICS ==================== -->
+<div class="panel" id="panel-analytics">
+  <div class="kpi-row">
+    <div class="kpi-card green"><div class="kpi-icon green"><i class="fa-solid fa-eye"></i></div><div class="kpi-val">9,284</div><div class="kpi-label">Page Views (7d)</div><span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +18%</span></div>
+    <div class="kpi-card yellow"><div class="kpi-icon yellow"><i class="fa-solid fa-clock"></i></div><div class="kpi-val">4m 22s</div><div class="kpi-label">Avg. Session</div><span class="kpi-change up"><i class="fa-solid fa-arrow-up"></i> +6%</span></div>
+    <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fa-solid fa-right-from-bracket"></i></div><div class="kpi-val">34%</div><div class="kpi-label">Bounce Rate</div><span class="kpi-change up"><i class="fa-solid fa-arrow-down"></i> -4% better</span></div>
+    <div class="kpi-card red"><div class="kpi-icon red"><i class="fa-solid fa-user-xmark"></i></div><div class="kpi-val">8.2%</div><div class="kpi-label">Churn Rate</div><span class="kpi-change down"><i class="fa-solid fa-arrow-up"></i> +1.2%</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-arrow-pointer"></i> Top Pages</div></div>
+      <div class="card-body">
+        <div class="stat-row"><div class="stat-label">/index.html</div><div class="stat-bar"><div class="stat-fill" style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="stat-val" style="color:var(--accent);">2.8k</div></div>
+        <div class="stat-row"><div class="stat-label">/teammates</div><div class="stat-bar"><div class="stat-fill" style="width:72%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div><div class="stat-val" style="color:var(--purple);">2.2k</div></div>
+        <div class="stat-row"><div class="stat-label">/competitions</div><div class="stat-bar"><div class="stat-fill" style="width:55%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div><div class="stat-val" style="color:var(--yellow);">1.7k</div></div>
+        <div class="stat-row"><div class="stat-label">/community</div><div class="stat-bar"><div class="stat-fill" style="width:40%;background:linear-gradient(90deg,var(--pink),var(--yellow));"></div></div><div class="stat-val" style="color:var(--pink);">1.2k</div></div>
+        <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">/profile</div><div class="stat-bar"><div class="stat-fill" style="width:28%;background:linear-gradient(90deg,#4fd1c5,var(--accent));"></div></div><div class="stat-val" style="color:#4fd1c5;">0.8k</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fa-solid fa-mobile"></i> Device Breakdown</div></div>
+      <div class="card-body">
+        <div class="stat-row"><div class="stat-label">Desktop</div><div class="stat-bar"><div class="stat-fill" style="width:62%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="stat-val" style="color:var(--accent);">62%</div></div>
+        <div class="stat-row"><div class="stat-label">Mobile</div><div class="stat-bar"><div class="stat-fill" style="width:31%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div><div class="stat-val" style="color:var(--purple);">31%</div></div>
+        <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">Tablet</div><div class="stat-bar"><div class="stat-fill" style="width:7%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div><div class="stat-val" style="color:var(--yellow);">7%</div></div>
+        <div class="divider"></div>
+        <div class="stat-row"><div class="stat-label">Chrome</div><div class="stat-bar"><div class="stat-fill" style="width:68%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="stat-val" style="color:var(--accent);">68%</div></div>
+        <div class="stat-row"><div class="stat-label">Firefox</div><div class="stat-bar"><div class="stat-fill" style="width:18%;background:linear-gradient(90deg,var(--purple),var(--pink));"></div></div><div class="stat-val" style="color:var(--purple);">18%</div></div>
+        <div class="stat-row" style="margin-bottom:0;"><div class="stat-label">Safari</div><div class="stat-bar"><div class="stat-fill" style="width:14%;background:linear-gradient(90deg,var(--yellow),#f7a048);"></div></div><div class="stat-val" style="color:var(--yellow);">14%</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</main>
+
+<!-- ========== MODALS ========== -->
+
+<!-- Announcement Modal -->
+<div class="modal-overlay" id="announcement-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fa-solid fa-bullhorn" style="color:var(--accent);margin-right:8px;"></i> New Announcement</div>
+      <button class="modal-close" onclick="closeModal('announcement-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <div class="form-label">Title</div>
+          <input class="form-input" type="text" placeholder="Announcement title…" id="ann-title">
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Message</div>
+          <textarea class="form-textarea" placeholder="Write your announcement…" id="ann-body" style="min-height:100px;"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Audience</div>
+          <select class="form-select">
+            <option>All Users</option>
+            <option>Verified Users</option>
+            <option>Team Leaders</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Status</div>
+          <select class="form-select">
+            <option>Active (publish now)</option>
+            <option>Scheduled</option>
+            <option>Draft</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="tb-btn" onclick="closeModal('announcement-modal')">Cancel</button>
+        <button class="tb-btn primary" onclick="publishAnnouncement()"><i class="fa-solid fa-paper-plane"></i> Publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal-overlay" id="add-user-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fa-solid fa-user-plus" style="color:var(--accent);margin-right:8px;"></i> Add User</div>
+      <button class="modal-close" onclick="closeModal('add-user-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <div class="form-label">Full Name</div>
+          <input class="form-input" type="text" placeholder="Arjun Patel">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Username</div>
+          <input class="form-input" type="text" placeholder="arjun_patel">
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Email</div>
+          <input class="form-input" type="email" placeholder="arjun@gmail.com">
+        </div>
+        <div class="form-group">
+          <div class="form-label">College</div>
+          <input class="form-input" type="text" placeholder="DTU Delhi">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Year</div>
+          <select class="form-select"><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Role / Skills</div>
+          <input class="form-input" type="text" placeholder="Full Stack, React…">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Account Status</div>
+          <select class="form-select"><option>Verified</option><option>Pending</option></select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="tb-btn" onclick="closeModal('add-user-modal')">Cancel</button>
+        <button class="tb-btn primary" onclick="addUser()"><i class="fa-solid fa-plus"></i> Create User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Competition Modal -->
+<div class="modal-overlay" id="comp-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fa-solid fa-trophy" style="color:var(--accent);margin-right:8px;"></i> Add Competition</div>
+      <button class="modal-close" onclick="closeModal('comp-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <div class="form-label">Competition Name</div>
+          <input class="form-input" type="text" placeholder="HackDreamUp 2024">
+        </div>
+        <div class="form-group full">
+          <div class="form-label">Description</div>
+          <textarea class="form-textarea" placeholder="Describe the competition…"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Category</div>
+          <select class="form-select"><option>Hackathon</option><option>AI/ML</option><option>Design</option><option>CleanTech</option><option>Web Dev</option></select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Prize Pool</div>
+          <input class="form-input" type="text" placeholder="₹1,00,000">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Registration Deadline</div>
+          <input class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Official URL</div>
+          <input class="form-input" type="url" placeholder="https://hackdreamup.com">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="tb-btn" onclick="closeModal('comp-modal')">Cancel</button>
+        <button class="tb-btn primary" onclick="addCompetition()"><i class="fa-solid fa-plus"></i> Add Competition</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST CONTAINER ========== -->
+<div id="toast-container"></div>
+
+<!-- ========== JS ========== -->
+<script>
+// ===== NAVIGATION =====
+const topbarTitles = {
+  dashboard:     ['Dashboard', 'Overview & Control'],
+  analytics:     ['Analytics', 'Traffic & Performance'],
+  users:         ['All Users', 'Manage user accounts'],
+  pending:       ['Pending Verification', 'OTP & email verification queue'],
+  reports:       ['Reports', 'User-submitted reports'],
+  competitions:  ['Competitions', 'Manage hackathons & contests'],
+  announcements: ['Announcements', 'Broadcast messages'],
+  community:     ['Community', 'Posts & moderation'],
+  pages:         ['Pages & Files', 'Source file manager'],
+  api:           ['API Config', 'Backend & integrations'],
+  settings:      ['Site Settings', 'Platform configuration'],
+  logs:          ['Server Logs', 'Real-time log output'],
+};
+
+function navigate(panel, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const target = document.getElementById('panel-'+panel);
+  if (target) target.classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = topbarTitles[panel] || ['Admin','Control Panel'];
+  document.getElementById('topbar-title').innerHTML = `${titles[0]} <span>${titles[1]}</span>`;
+  if (window.innerWidth < 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ===== MODAL =====
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+
+// ===== TOAST =====
+function showToast(msg, type='success') {
+  const icons = { success:'fa-check-circle', error:'fa-circle-xmark', info:'fa-circle-info' };
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="fa-solid ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(20px)'; toast.style.transition='all 0.3s'; setTimeout(()=>toast.remove(), 300); }, 3000);
+}
+
+// ===== TABLE FILTER =====
+function filterTable(tbodyId, query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll(`#${tbodyId} tr`).forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ===== SELECT ALL =====
+function selectAll(master, tbodyId) {
+  const tbody = tbodyId ? document.getElementById(tbodyId) : master.closest('table').querySelector('tbody');
+  if (!tbody) return;
+  tbody.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = master.checked);
+}
+
+// ===== ACTIONS =====
+function publishAnnouncement() {
+  const t = document.getElementById('ann-title').value;
+  if (!t.trim()) { showToast('Please enter a title','error'); return; }
+  closeModal('announcement-modal');
+  showToast('Announcement published to all users!', 'success');
+  document.getElementById('ann-title').value = '';
+  document.getElementById('ann-body').value = '';
+}
+
+function addUser() {
+  closeModal('add-user-modal');
+  showToast('User account created & OTP sent','success');
+}
+
+function addCompetition() {
+  closeModal('comp-modal');
+  showToast('Competition added successfully!','success');
+}
+
+function testAPI() {
+  showToast('Testing connection…','info');
+  setTimeout(() => showToast('Flask API responding ✓ 142ms','success'), 1200);
+}
+
+function clearLogs() {
+  document.getElementById('log-output').innerHTML = '<div style="color:var(--text3);font-style:italic;">Logs cleared by admin.</div><div id="live-log-target"></div>';
+  showToast('Logs cleared','info');
+}
+
+// ===== LIVE LOG SIMULATION =====
+const liveLogMessages = [
+  ['INFO ', 'var(--accent)',  'GET /teammates — 200 — 34ms'],
+  ['INFO ', 'var(--accent)',  'POST /verify-otp — 200 — priya@outlook.com — verified'],
+  ['WARN ', 'var(--yellow)', 'Rate limit approaching on /resend-otp'],
+  ['INFO ', 'var(--accent)',  'POST /newlogin — 200 — neha@gmail.com — OTP sent'],
+  ['ERROR', 'var(--red)',     'DB connection timeout — retrying (1/3)'],
+  ['INFO ', 'var(--accent)',  'DB reconnected successfully'],
+];
+let liveLogIndex = 0;
+
+function appendLiveLog() {
+  const entry = liveLogMessages[liveLogIndex % liveLogMessages.length];
+  liveLogIndex++;
+  const now = new Date();
+  const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const target = document.getElementById('live-log-target');
+  if (!target) return;
+  const line = document.createElement('div');
+  line.innerHTML = `<span style="color:var(--text3);">[${ts}]</span> <span style="color:${entry[1]};">${entry[0]}</span> ${entry[2]}`;
+  target.parentNode.insertBefore(line, target);
+  target.parentNode.scrollTop = target.parentNode.scrollHeight;
+}
+setInterval(appendLiveLog, 8000);
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+});
+</script>
+<script src="api.js"></script>
+</body>
+</html>

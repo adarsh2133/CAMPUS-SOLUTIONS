@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — My Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .profile-layout { display:grid; grid-template-columns:320px 1fr; gap:20px; }
+
+  .profile-card {
+    background:var(--surface); border:1px solid var(--border-sm);
+    border-radius:var(--radius); overflow:hidden;
+    animation: fadeUp 0.3s ease both;
+    position: sticky; top: 80px; height: fit-content;
+  }
+  .profile-banner {
+    height:100px;
+    background:linear-gradient(135deg, rgba(61,235,188,0.3), rgba(15,168,130,0.2), rgba(61,235,188,0.1));
+    position:relative;
+  }
+  .profile-avatar-wrap {
+    position:absolute; top: 110px; left:24px;
+  }
+  .profile-avatar {
+    width:72px; height:72px; border-radius:50%;
+    background:linear-gradient(135deg,#3debbc,#0fa882);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:800; font-size:24px;
+    color:#0a0a0f;
+    border:3px solid var(--bg);
+  }
+  .profile-info { padding:48px 24px 20px; }
+  .profile-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:4px; }
+  .profile-role { font-size:14px; color:var(--text3); margin-bottom:8px; }
+  .profile-loc { font-size:13px; color:var(--text3); margin-bottom:16px; }
+  .profile-loc i { margin-right:4px; color:var(--accent); }
+  .profile-bio { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:16px; }
+  .profile-stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+  .p-stat { background:var(--surface2); border-radius:10px; padding:12px; text-align:center; border:1px solid var(--border-sm); }
+  .p-stat .val { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--accent); }
+  .p-stat .lbl { font-size:10px; color:var(--text3); }
+  .strength-row { display:flex; justify-content:space-between; font-size:12px; color:var(--text3); margin-bottom:6px; }
+  .strength-row b { color:var(--accent); }
+  .social-links { display:flex; gap:8px; margin-top:16px; }
+  .social-btn { flex:1; background:var(--surface2); border:1px solid var(--border-sm); border-radius:8px; padding:8px; text-align:center; font-size:16px; cursor:pointer; transition:all 0.15s; color:var(--text3); text-decoration:none; display:flex; align-items:center; justify-content:center; }
+  .social-btn:hover { border-color:var(--accent-border); color:var(--accent); }
+
+  .profile-sections { display:flex; flex-direction:column; gap:20px; }
+  .section-card { background:var(--surface); border:1px solid var(--border-sm); border-radius:var(--radius); overflow:hidden; animation: fadeUp 0.4s ease both; }
+  .section-header { padding:18px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-sm); }
+  .section-header h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
+  .section-body { padding:20px 24px; }
+
+  .skill-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .skill-item-full { grid-column:1 / -1; }
+  .skill-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .skill-label { font-size:13px; width:80px; color:var(--text3); }
+
+  .exp-item { display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--border-sm); }
+  .exp-item:last-child { border-bottom:none; padding-bottom:0; }
+  .exp-dot { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .exp-title { font-size:14px; font-weight:700; margin-bottom:3px; }
+  .exp-company { font-size:13px; color:var(--text3); margin-bottom:4px; }
+  .exp-desc { font-size:12px; color:var(--text3); line-height:1.5; }
+  .exp-period { font-size:11px; color:var(--accent); background:var(--accent-dim); border:1px solid var(--accent-border); padding:2px 8px; border-radius:20px; display:inline-block; margin-bottom:6px; }
+
+  .cert-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .cert-item { background:var(--surface2); border:1px solid var(--border-sm); border-radius:10px; padding:14px; }
+  .cert-name { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .cert-by { font-size:11px; color:var(--text3); }
+  .cert-icon { font-size:20px; margin-bottom:8px; }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">STU<span>NET</span></div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="index.html"><span class="icon"><i class="fa-solid fa-bolt"></i></span> Dashboard</a>
+    <a class="nav-item" href="teammates.html"><span class="icon"><i class="fa-solid fa-users"></i></span> Find Teammates <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="competitions.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span> Competitions</a>
+    <a class="nav-item" href="community.html"><span class="icon"><i class="fa-solid fa-comments"></i></span> Community <span class="nav-badge">3</span></a>
+    <div class="nav-label" style="margin-top:16px;">My Space</div>
+    <a class="nav-item active" href="profile.html"><span class="icon"><i class="fa-solid fa-user"></i></span> My Profile</a>
+    <a class="nav-item" href="team.html"><span class="icon"><i class="fa-solid fa-people-group"></i></span> My Team</a>
+    <a class="nav-item" href="projects.html"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Projects</a>
+    <a class="nav-item" href="achievements.html"><span class="icon"><i class="fa-solid fa-chart-simple"></i></span> Achievements</a>
+    <div class="nav-label" style="margin-top:16px;">More</div>
+    <a class="nav-item" href="resources.html"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> Resources</a>
+    <a class="nav-item" href="settings.html"><span class="icon"><i class="fa-solid fa-gear"></i></span> Settings</a>
+  </nav>
+  <div class="sidebar-user"><div class="avatar">AP</div><div class="sidebar-user-info"><div class="name">Arjun Patel</div><div class="role">Full Stack · Delhi</div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <h1>My Profile</h1>
+    <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><span>Search…</span></div>
+    <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar" style="width:38px;height:38px;font-size:13px;cursor:pointer;">AP</div>
+  </header>
+
+  <div class="content">
+    <div class="profile-layout">
+      <!-- LEFT -->
+      <div>
+        <div class="profile-card">
+          <div class="profile-banner"></div>
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">AP</div>
+          </div>
+          <div class="profile-info">
+            <div style="text-align:right;margin-bottom:8px;"><button class="btn-primary" style="padding:7px 16px;font-size:12px;"><i class="fa-solid fa-pen"></i> Edit Profile</button></div>
+            <div class="profile-name">Arjun Patel</div>
+            <div class="profile-role">Full Stack Developer</div>
+            <div class="profile-loc"><i class="fa-solid fa-location-dot"></i>Delhi, India · DTU</div>
+            <div class="profile-bio">Passionate full-stack developer with a love for building scalable web apps. Looking for teammates to build impactful products and win hackathons together 🚀</div>
+            <div class="profile-stat-row">
+              <div class="p-stat"><div class="val">4.8</div><div class="lbl">Rating</div></div>
+              <div class="p-stat"><div class="val">12</div><div class="lbl">Projects</div></div>
+              <div class="p-stat"><div class="val">6</div><div class="lbl">Hackathons</div></div>
+            </div>
+            <div class="strength-row"><span>Profile Strength</span><b>87%</b></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:87%;"></div></div>
+            <div class="social-links">
+              <a class="social-btn" href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a class="social-btn" href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+              <a class="social-btn" href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+              <a class="social-btn" href="#" title="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="profile-sections">
+        <div class="section-card" style="animation-delay:0.05s">
+          <div class="section-header"><h3><i class="fa-solid fa-dumbbell" style="color:var(--accent);margin-right:8px;"></i>Skills</h3><a class="card-link" href="#">+ Add Skill</a></div>
+          <div class="section-body">
+            <div class="skill-grid">
+              <div class="skill-item-full">
+                <div class="skill-row"><span class="skill-label">React</span><div class="skill-bar"><div class="skill-fill" style="width:92%;background:linear-gradient(90deg,var(--accent),#0fa882);"></div></div><span class="skill-pct">92%</span></div>
+                <div class="skill-row"><span class="skill-label">Node.js</span><div class="skill-bar"><div class="skill-fill" style="width:80%;background:linear-gradient(90deg,#4fd1c5,var(--accent));"></div></div><span class="skill-pct">80%</span></div>
+                <div class="skill-row"><span class="skill-label">Python</span><div class="skill-bar"><div class="skill-fill" style="width:75%;background:linear-gradient(90deg,var(--accent2),#f7c948);"></div></div><span class="skill-pct">75%</span></div>
+              </div>
+              <div class="skill-item-full">
+                <div class="skill-row"><span class="skill-label">TypeScript</span><div class="skill-bar"><div class="skill-fill" style="width:68%;background:linear-gradient(90deg,var(--accent),#4fd1c5);"></div></div><span class="skill-pct">68%</span></div>
+                <div class="skill-row"><span class="skill-label">PostgreSQL</span><div class="skill-bar"><div class="skill-fill" style="width:60%;background:linear-gradient(90deg,#3debbc,#4fd1c5);"></div></div><span class="skill-pct">60%</span></div>
+                <div class="skill-row"><span class="skill-label">UI/UX</span><div class="skill-bar"><div class="skill-fill" style="width:45%;background:linear-gradient(90deg,var(--accent2),var(--accent));"></div></div><span class="skill-pct">45%</span></div>
+              </div>
+            </div>
+            <div style="margin-top:12px;"><div class="tags"><span class="tag" style="font-size:12px;padding:4px 10px;">Docker</span><span class="tag" style="font-size:12px;padding:4px 10px;">AWS</span><span class="tag" style="font-size:12px;padding:4px 10px;">GraphQL</span><span class="tag" style="font-size:12px;padding:4px 10px;">Redis</span><span class="tag" style="font-size:12px;padding:4px 10px;">Git</span><span class="tag" style="font-size:12px;padding:4px 10px;">Figma</span></div></div>
+          </div>
+        </div>
+
+        <div class="section-card" style="animation-delay:0.1s">
+          <div class="section-header"><h3><i class="fa-solid fa-briefcase" style="color:var(--accent);margin-right:8px;"></i>Experience</h3><a class="card-link" href="#">+ Add</a></div>
+          <div class="section-body" style="padding-top:8px;">
+            <div class="exp-item">
+              <div class="exp-dot" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-laptop-code"></i></div>
+              <div>
+                <div class="exp-period">Jun 2024 – Present</div>
+                <div class="exp-title">Software Engineer Intern</div>
+                <div class="exp-company">Razorpay · Remote</div>
+                <div class="exp-desc">Built React dashboards for payment analytics. Improved API response time by 40% using Redis caching. Collaborated with 5-member team using Agile.</div>
+              </div>
+            </div>
+            <div class="exp-item">
+              <div class="exp-dot" style="background:rgba(240,107,174,0.1);color:var(--accent2)"><i class="fa-solid fa-code"></i></div>
+              <div>
+                <div class="exp-period">Jan 2024 – May 2024</div>
+                <div class="exp-title">Full Stack Developer Intern</div>
+                <div class="exp-company">Startup XYZ · Delhi</div>
+                <div class="exp-desc">Developed RESTful APIs with Node.js/Express. Integrated third-party payment gateways. Led frontend migration from Vue to React.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card" style="animation-delay:0.15s">
+          <div class="section-header"><h3><i class="fa-solid fa-certificate" style="color:var(--accent);margin-right:8px;"></i>Certifications</h3><a class="card-link" href="#">+ Add</a></div>
+          <div class="section-body">
+            <div class="cert-grid">
+              <div class="cert-item"><div class="cert-icon">☁️</div><div class="cert-name">AWS Solutions Architect</div><div class="cert-by">Amazon Web Services · 2024</div></div>
+              <div class="cert-item"><div class="cert-icon">🔵</div><div class="cert-name">Meta React Developer</div><div class="cert-by">Meta · Coursera · 2023</div></div>
+              <div class="cert-item"><div class="cert-icon">🧠</div><div class="cert-name">Deep Learning Specialization</div><div class="cert-by">DeepLearning.AI · 2023</div></div>
+              <div class="cert-item"><div class="cert-icon">🐳</div><div class="cert-name">Docker & Kubernetes</div><div class="cert-by">Linux Foundation · 2024</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="api.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUNET — Achievements</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="stunet-combined.css">
+<style>
+  .ach-hero {
+    background:linear-gradient(120deg,rgba(247,201,72,0.1),rgba(61,235,188,0.07));
+    border:1px solid rgba(247,201,72,0.25);
+    border-radius:var(--radius); padding:28px 32px; margin-bottom:24px;
+    display:flex; align-items:center; gap:24px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .ach-hero-icon { font-size:56px; }
+  .ach-hero h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:4px; }
+  .ach-hero p { font-size:14px; color:var(--text3); }
+  .ach-hero-stats { display:flex; gap:32px; margin-left:auto; }
+  .ah-stat .val { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; color:var(--yellow); }
+  .ah-stat .lbl { font-size:11px; color:var(--text3); }
+
+  .ach-layout { display:grid; grid-template-columns:1fr 300px; gap:20px; }
+
+  /* BADGES */
+  .badges-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+  .badge-card {
+    background:var(--surface); border:1px solid var(--border-sm);
+    border-radius:var(--radius); padding:20px;
+    text-align:center; cursor:pointer;
+    transition:all 0.2s; animation: fadeUp 0.4s ease both;
+  }
+  .badge-card:hover { border-color:var(--accent-border); transform:translateY(-2px); }
+  .badge-card.locked { opacity:0.4; filter:grayscale(1); }
+  .badge-icon { font-size:36px; margin-bottom:10px; }
+  .badge-name { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .badge-desc { font-size:11px; color:var(--text3); line-height:1.4; }
+  .badge-date { font-size:10px; color:var(--accent); margin-top:6px; font-weight:600; }
+
+  /* TIMELINE */
+  .timeline { padding:8px 0; }
+  .tl-item { display:flex; gap:16px; padding:16px 0; position:relative; }
+  .tl-item::before { content:''; position:absolute; left:15px; top:40px; bottom:0; width:2px; background:var(--border-sm); }
+  .tl-item:last-child::before { display:none; }
+  .tl-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; z-index:1; }
+  .tl-content { flex:1; padding-bottom:4px; }
+  .tl-title { font-size:14px; font-weight:700; margin-bottom:3px; }
+  .tl-desc { font-size:12px; color:var(--text3); line-height:1.5; margin-bottom:6px; }
+  .tl-date { font-size:11px; color:var(--text3); }
+  .tl-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; display:inline-block; margin-left:8px; }
+
+  /* RANK CARD */
+  .rank-card { background:var(--surface); border:1px solid var(--border-sm); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; animation: fadeUp 0.4s ease both; }
+  .rank-item { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid var(--border-sm); }
+  .rank-item:last-child { border-bottom:none; }
+  .rank-num { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--text3); width:28px; text-align:center; }
+  .rank-num.top { color:var(--yellow); }
+  .rank-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#0a0a0f; flex-shrink:0; }
+  .rank-name { font-size:13px; font-weight:600; flex:1; }
+  .rank-pts { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; color:var(--accent); }
+  .you-row { background:rgba(61,235,188,0.06); border-left:2px solid var(--accent); }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">STU<span>NET</span></div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="index.html"><span class="icon"><i class="fa-solid fa-bolt"></i></span> Dashboard</a>
+    <a class="nav-item" href="teammates.html"><span class="icon"><i class="fa-solid fa-users"></i></span> Find Teammates <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="competitions.html"><span class="icon"><i class="fa-solid fa-trophy"></i></span> Competitions</a>
+    <a class="nav-item" href="community.html"><span class="icon"><i class="fa-solid fa-comments"></i></span> Community <span class="nav-badge">3</span></a>
+    <div class="nav-label" style="margin-top:16px;">My Space</div>
+    <a class="nav-item" href="profile.html"><span class="icon"><i class="fa-solid fa-user"></i></span> My Profile</a>
+    <a class="nav-item" href="team.html"><span class="icon"><i class="fa-solid fa-people-group"></i></span> My Team</a>
+    <a class="nav-item" href="projects.html"><span class="icon"><i class="fa-solid fa-folder-open"></i></span> Projects</a>
+    <a class="nav-item active" href="achievements.html"><span class="icon"><i class="fa-solid fa-chart-simple"></i></span> Achievements</a>
+    <div class="nav-label" style="margin-top:16px;">More</div>
+    <a class="nav-item" href="resources.html"><span class="icon"><i class="fa-solid fa-graduation-cap"></i></span> Resources</a>
+    <a class="nav-item" href="settings.html"><span class="icon"><i class="fa-solid fa-gear"></i></span> Settings</a>
+  </nav>
+  <div class="sidebar-user"><div class="avatar">AP</div><div class="sidebar-user-info"><div class="name">Arjun Patel</div><div class="role">Full Stack · Delhi</div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <h1>Achievements</h1>
+    <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><span>Search…</span></div>
+    <div class="notif-btn"><i class="fa-solid fa-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar" style="width:38px;height:38px;font-size:13px;cursor:pointer;">AP</div>
+  </header>
+
+  <div class="content">
+    <div class="ach-hero">
+      <div class="ach-hero-icon">🏆</div>
+      <div>
+        <h2>Level 12 — Hackathon Veteran</h2>
+        <p>2,840 XP earned · 340 XP to next level</p>
+        <div style="margin-top:10px;">
+          <div class="progress-bar" style="width:280px;height:8px;"><div class="progress-fill" style="width:72%;"></div></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px;">2,840 / 3,180 XP</div>
+        </div>
+      </div>
+      <div class="ach-hero-stats">
+        <div class="ah-stat"><div class="val">18</div><div class="lbl">Badges</div></div>
+        <div class="ah-stat"><div class="val">6</div><div class="lbl">Wins</div></div>
+        <div class="ah-stat"><div class="val">#47</div><div class="lbl">National Rank</div></div>
+      </div>
+    </div>
+
+    <div class="ach-layout">
+      <div>
+        <div class="section-title" style="margin-bottom:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="color:var(--accent)">●</span>Badges</div>
+        <div class="badges-grid">
+          <div class="badge-card" style="animation-delay:0.05s"><div class="badge-icon">🥇</div><div class="badge-name">Hackathon Winner</div><div class="badge-desc">Won 1st place in a hackathon</div><div class="badge-date">GreenRoute Hack 2023</div></div>
+          <div class="badge-card" style="animation-delay:0.1s"><div class="badge-icon">🤝</div><div class="badge-name">Team Player</div><div class="badge-desc">Completed 5 projects with teams</div><div class="badge-date">Earned Nov 2023</div></div>
+          <div class="badge-card" style="animation-delay:0.15s"><div class="badge-icon">⭐</div><div class="badge-name">Top Rated</div><div class="badge-desc">Maintained 4.5+ rating for 3 months</div><div class="badge-date">Earned Jan 2024</div></div>
+          <div class="badge-card" style="animation-delay:0.2s"><div class="badge-icon">🚀</div><div class="badge-name">Early Adopter</div><div class="badge-desc">Among first 1000 STUNET users</div><div class="badge-date">Earned Sep 2023</div></div>
+          <div class="badge-card" style="animation-delay:0.25s"><div class="badge-icon">💡</div><div class="badge-name">Idea Machine</div><div class="badge-desc">Submitted 10+ project ideas</div><div class="badge-date">Earned Dec 2023</div></div>
+          <div class="badge-card" style="animation-delay:0.3s"><div class="badge-icon">🌐</div><div class="badge-name">Open Sourcerer</div><div class="badge-desc">Contributed to 5 open source projects</div><div class="badge-date">Earned Feb 2024</div></div>
+          <div class="badge-card locked" style="animation-delay:0.35s"><div class="badge-icon">👑</div><div class="badge-name">Legend</div><div class="badge-desc">Win 3 hackathons in a year</div></div>
+          <div class="badge-card locked" style="animation-delay:0.4s"><div class="badge-icon">🎯</div><div class="badge-name">Recruiter's Pick</div><div class="badge-desc">Get 10 recruiter profile views</div></div>
+          <div class="badge-card locked" style="animation-delay:0.45s"><div class="badge-icon">🔥</div><div class="badge-name">Streak Master</div><div class="badge-desc">Log in 30 days in a row</div></div>
+        </div>
+
+        <div class="section-title" style="margin-bottom:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="color:var(--accent)">●</span>Achievement History</div>
+        <div class="card"><div class="card-header"><span class="card-title">Recent Milestones</span></div>
+          <div style="padding:8px 24px 16px;">
+            <div class="timeline">
+              <div class="tl-item">
+                <div class="tl-dot" style="background:rgba(247,201,72,0.15);color:var(--yellow)"><i class="fa-solid fa-trophy"></i></div>
+                <div class="tl-content"><div class="tl-title">2nd Place — HackBridge 2024 <span class="tl-badge" style="background:rgba(61,235,188,0.12);color:var(--accent);border:1px solid var(--accent-border);">+500 XP</span></div><div class="tl-desc">Competed with Team ByteBuilders. Built EduTrack AI in 48 hours with 3 teammates.</div><div class="tl-date">Feb 2024</div></div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-star"></i></div>
+                <div class="tl-content"><div class="tl-title">Earned Top Rated Badge <span class="tl-badge" style="background:rgba(61,235,188,0.12);color:var(--accent);border:1px solid var(--accent-border);">+200 XP</span></div><div class="tl-desc">Maintained a 4.8 average rating for 90 consecutive days.</div><div class="tl-date">Jan 2024</div></div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:rgba(240,107,174,0.1);color:var(--accent2)"><i class="fa-solid fa-medal"></i></div>
+                <div class="tl-content"><div class="tl-title">1st Place — GreenRoute Hackathon <span class="tl-badge" style="background:rgba(247,201,72,0.12);color:var(--yellow);">+800 XP</span></div><div class="tl-desc">Solo hack. Built carbon footprint tracker for commuters. Judged by Google engineers.</div><div class="tl-date">Nov 2023</div></div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:rgba(61,235,188,0.1);color:var(--accent)"><i class="fa-solid fa-code-branch"></i></div>
+                <div class="tl-content"><div class="tl-title">Open Sourcerer Badge Unlocked <span class="tl-badge" style="background:rgba(61,235,188,0.12);color:var(--accent);border:1px solid var(--accent-border);">+150 XP</span></div><div class="tl-desc">Merged 5 pull requests to open source projects including React and Next.js repos.</div><div class="tl-date">Oct 2023</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="rank-card" style="animation-delay:0.05s">
+          <div class="card-header"><span class="card-title"><i class="fa-solid fa-ranking-star" style="color:var(--yellow);margin-right:8px;"></i>Delhi Leaderboard</span><a class="card-link" href="#">Full →</a></div>
+          <div class="rank-item"><div class="rank-num top">1</div><div class="rank-avatar" style="background:linear-gradient(135deg,#f7c948,#f06bae);">RK</div><div class="rank-name">Rohan Kumar</div><div class="rank-pts">3,840</div></div>
+          <div class="rank-item"><div class="rank-num top">2</div><div class="rank-avatar" style="background:linear-gradient(135deg,#4fd1c5,#3debbc);">AM</div><div class="rank-name">Aditya Mehta</div><div class="rank-pts">3,420</div></div>
+          <div class="rank-item"><div class="rank-num top">3</div><div class="rank-avatar" style="background:linear-gradient(135deg,#f06bae,#f7c948);">PS</div><div class="rank-name">Priya Sharma</div><div class="rank-pts">3,190</div></div>
+          <div class="rank-item"><div class="rank-num">4</div><div class="rank-avatar" style="background:linear-gradient(135deg,#3debbc,#f06bae);">VS</div><div class="rank-name">Vikram Singh</div><div class="rank-pts">2,980</div></div>
+          <div class="rank-item you-row"><div class="rank-num" style="color:var(--accent);">5</div><div class="rank-avatar" style="background:linear-gradient(135deg,#3debbc,#0fa882);">AP</div><div class="rank-name" style="color:var(--accent);font-weight:700;">You</div><div class="rank-pts">2,840</div></div>
+          <div class="rank-item"><div class="rank-num">6</div><div class="rank-avatar" style="background:linear-gradient(135deg,#f7c948,#3debbc);">NK</div><div class="rank-name">Nisha Kapoor</div><div class="rank-pts">2,610</div></div>
+        </div>
+
+        <div class="card" style="animation-delay:0.1s">
+          <div class="card-header"><span class="card-title"><i class="fa-solid fa-chart-line" style="color:var(--accent);margin-right:8px;"></i>XP by Category</span></div>
+          <div style="padding:16px 20px;">
+            <div class="readiness-row" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+              <span style="font-size:12px;color:var(--text3);width:100px;flex-shrink:0;">Hackathons</span>
+              <div style="flex:1;background:var(--surface3);border-radius:20px;height:8px;overflow:hidden;"><div style="height:100%;width:82%;border-radius:20px;background:linear-gradient(90deg,var(--yellow),var(--accent));"></div></div>
+              <span style="font-size:12px;font-weight:700;color:var(--yellow);width:40px;text-align:right;">1,300</span>
+            </div>
+            <div class="readiness-row" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+              <span style="font-size:12px;color:var(--text3);width:100px;flex-shrink:0;">Projects</span>
+              <div style="flex:1;background:var(--surface3);border-radius:20px;height:8px;overflow:hidden;"><div style="height:100%;width:60%;border-radius:20px;background:linear-gradient(90deg,var(--accent),#0fa882);"></div></div>
+              <span style="font-size:12px;font-weight:700;color:var(--accent);width:40px;text-align:right;">960</span>
+            </div>
+            <div class="readiness-row" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+              <span style="font-size:12px;color:var(--text3);width:100px;flex-shrink:0;">Community</span>
+              <div style="flex:1;background:var(--surface3);border-radius:20px;height:8px;overflow:hidden;"><div style="height:100%;width:30%;border-radius:20px;background:linear-gradient(90deg,var(--accent2),#f7c948);"></div></div>
+              <span style="font-size:12px;font-weight:700;color:var(--accent2);width:40px;text-align:right;">480</span>
+            </div>
+            <div class="readiness-row" style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:12px;color:var(--text3);width:100px;flex-shrink:0;">Profile</span>
+              <div style="flex:1;background:var(--surface3);border-radius:20px;height:8px;overflow:hidden;"><div style="height:100%;width:63%;border-radius:20px;background:linear-gradient(90deg,#4fd1c5,var(--accent));"></div></div>
+              <span style="font-size:12px;font-weight:700;color:var(--accent3);width:40px;text-align:right;">100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="api.js"></script>
+</body>
+</html>
