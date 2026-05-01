@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: stunet-it3
+    env: node
+    plan: free
+    rootDir: STUNET-IT3/backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        value: '*'
